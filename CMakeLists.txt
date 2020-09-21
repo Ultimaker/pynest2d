@@ -26,6 +26,7 @@ endif()
 
 # Building and linking.
 set(SIP_EXTRA_FILES_DEPEND
+    src/Box.sip
     src/Point.sip
 )
 

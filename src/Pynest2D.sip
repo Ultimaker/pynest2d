@@ -3,6 +3,7 @@
 
 %Module(name = pynest2d, call_super_init = True)
 
+%Include Box.sip
 %Include Point.sip
 
 %ModuleHeaderCode
