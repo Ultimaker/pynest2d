@@ -9,7 +9,14 @@ class Point
 
 public:
     Point(long x, long y);
-    long X;
-    long Y;
-};
 
+    long x();
+    %MethodCode
+        sipRes = sipCpp->X; //Use Clipper implementation.
+    %End
+
+    long y();
+    %MethodCode
+        sipRes = sipCpp->Y; //Use Clipper implementation.
+    %End
+};
