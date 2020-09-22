@@ -5,6 +5,7 @@
 
 %Include Box.sip
 %Include Circle.sip
+%Include Item.sip
 %Include Point.sip
 
 %ModuleHeaderCode

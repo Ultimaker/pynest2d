@@ -28,6 +28,7 @@ endif()
 set(SIP_EXTRA_FILES_DEPEND
     src/Box.sip
     src/Circle.sip
+    src/Item.sip
     src/Point.sip
 )
 
