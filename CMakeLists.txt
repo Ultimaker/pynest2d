@@ -35,4 +35,4 @@ set(SIP_EXTRA_FILES_DEPEND
 
 set(SIP_EXTRA_OPTIONS -g)  # Always release the GIL before calling C++ methods.
 include_directories(src/ ${SIP_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${CLIPPER_INCLUDE_DIRS} ${LIBNEST2D_INCLUDE_DIR})
-add_sip_python_module(pynest2d src/Pynest2D.sip ${LIBNEST2D_LIBRARY})
+add_sip_python_module(pynest2d src/Pynest2D.sip ${LIBNEST2D_LIBRARY} ${CLIPPER_LIBRARIES})
