@@ -7,6 +7,7 @@
 %Include Circle.sip
 %Include Item.sip
 %Include Point.sip
+%Include Rectangle.sip
 %Include String.sip
 
 %ModuleHeaderCode

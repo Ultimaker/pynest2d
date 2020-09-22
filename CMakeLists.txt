@@ -30,6 +30,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Circle.sip
     src/Item.sip
     src/Point.sip
+    src/Rectangle.sip
     src/String.sip
 )
 
