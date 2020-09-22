@@ -9,6 +9,7 @@
 %Include Circle.sip
 %Include Item.sip
 %Include NfpConfig.sip
+%Include NfpPlacer.sip
 %Include Point.sip
 %Include Rectangle.sip
 %Include String.sip

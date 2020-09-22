@@ -13,7 +13,7 @@ find_package(SIP REQUIRED)
 find_package(libnest2d REQUIRED)
 find_package(Clipper REQUIRED)
 find_package(Boost REQUIRED)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper -DLIBNEST2D_OPTIMIZERS_nlopt")
 
 # Some build options.
 set(CMAKE_CXX_STANDARD 11)
@@ -32,6 +32,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Circle.sip
     src/Item.sip
     src/NfpConfig.sip
+    src/NfpPlacer.sip
     src/Point.sip
     src/Rectangle.sip
     src/String.sip
