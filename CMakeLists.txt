@@ -30,6 +30,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Circle.sip
     src/Item.sip
     src/Point.sip
+    src/String.sip
 )
 
 set(SIP_EXTRA_OPTIONS -g)  # Always release the GIL before calling C++ methods.
