@@ -12,6 +12,7 @@ find_package(PythonLibs 3.5 REQUIRED)
 find_package(SIP REQUIRED)
 find_package(libnest2d REQUIRED)
 find_package(Clipper REQUIRED)
+find_package(NLopt REQUIRED)
 find_package(Boost REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper -DLIBNEST2D_OPTIMIZERS_nlopt")
 
@@ -39,5 +40,5 @@ set(SIP_EXTRA_FILES_DEPEND
 )
 
 set(SIP_EXTRA_OPTIONS -g)  # Always release the GIL before calling C++ methods.
-include_directories(src/ ${SIP_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${CLIPPER_INCLUDE_DIRS} ${LIBNEST2D_INCLUDE_DIR})
-add_sip_python_module(pynest2d src/Pynest2D.sip ${LIBNEST2D_LIBRARY} ${CLIPPER_LIBRARIES})
+include_directories(src/ ${SIP_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${CLIPPER_INCLUDE_DIRS} ${NLopt_INCLUDE_DIRS} ${LIBNEST2D_INCLUDE_DIR})
+add_sip_python_module(pynest2d src/Pynest2D.sip ${LIBNEST2D_LIBRARY} ${CLIPPER_LIBRARIES} ${NLopt_LIBRARIES})
