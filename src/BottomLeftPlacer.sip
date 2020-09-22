@@ -29,4 +29,8 @@ public:
     Item downPoly(Item item);
     long availableSpaceLeft(Item item);
     long availableSpaceDown(Item item);
+    void clearItems();
+    void accept(PackResult r);
+    void unpackLast();
+    double filledArea();
 };

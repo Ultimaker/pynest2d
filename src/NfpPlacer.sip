@@ -34,4 +34,7 @@ public:
     PackResult trypack(Item);
     bool pack(Item);
     void clearItems();
+    void accept(PackResult r);
+    void unpackLast();
+    double filledArea();
 };
