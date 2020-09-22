@@ -5,7 +5,7 @@ struct BottomLeftConfig
 {
     %TypeHeaderCode
         #include <libnest2d/libnest2d.hpp>
-        using BottomLeftConfig = BLConfig<ClipperLib::Path>; //Specialise the templated BLConfig class since SIP doesn't deal with templates.
+        using BottomLeftConfig = BLConfig<ClipperLib::Polygon>; //Specialise the templated BLConfig class since SIP doesn't deal with templates.
     %End
 
     long min_obj_distance;

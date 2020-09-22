@@ -18,10 +18,13 @@ public:
     };
 
     BottomLeftPlacer(Box box);
+    void configure(BottomLeftConfig config);
 
     void bin(Box box);
+    Box bin();
 
     PackResult trypack(Item item);
+    bool pack(Item item);
     Item leftPoly(Item item);
     Item downPoly(Item item);
     long availableSpaceLeft(Item item);
