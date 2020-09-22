@@ -4,7 +4,7 @@
 class Point
 {
     %TypeHeaderCode
-    #include <libnest2d/libnest2d.hpp>
+        #include <libnest2d/libnest2d.hpp>
     %End
 
 public:

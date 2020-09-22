@@ -6,6 +6,7 @@
 %Include Box.sip
 %Include Circle.sip
 %Include Item.sip
+%Include BottomLeftPlacer.sip
 %Include Point.sip
 %Include Rectangle.sip
 %Include String.sip
