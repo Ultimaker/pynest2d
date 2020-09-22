@@ -8,6 +8,7 @@
 %Include Box.sip
 %Include Circle.sip
 %Include Item.sip
+%Include NfpConfig.sip
 %Include Point.sip
 %Include Rectangle.sip
 %Include String.sip

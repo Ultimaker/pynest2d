@@ -31,6 +31,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Box.sip
     src/Circle.sip
     src/Item.sip
+    src/NfpConfig.sip
     src/Point.sip
     src/Rectangle.sip
     src/String.sip
