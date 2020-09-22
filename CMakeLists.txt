@@ -26,10 +26,11 @@ endif()
 
 # Building and linking.
 set(SIP_EXTRA_FILES_DEPEND
+    src/BottomLeftConfig.sip
+    src/BottomLeftPlacer.sip
     src/Box.sip
     src/Circle.sip
     src/Item.sip
-    src/BottomLeftPlacer.sip
     src/Point.sip
     src/Rectangle.sip
     src/String.sip
