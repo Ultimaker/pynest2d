@@ -6,7 +6,7 @@ The objective of this repository is to allow libnest2d to be called from Python 
 
 Usage
 ====
-This is an example of how you can use these Python bindings to arrange multiple shapes on the build plate.
+This is an example of how you can use these Python bindings to arrange multiple shapes in a volume.
 
 ```python
 >>> from pynest2d import *
@@ -15,7 +15,7 @@ This is an example of how you can use these Python bindings to arrange multiple 
 >>> i2 = Item([Point(0, 0), Point(100, 0), Point(100, 100), Point(0, 100)])  # Square.
 >>> i3 = Item([Point(0, 0), Point(100, 0), Point(50, 100)])                  # Equilateral triangle.
 >>> num_bins = nest([i1, i2, i3], bin)  # The actual arranging!
->>> num_bins
+>>> num_bins  # How many bins are required to add all objects.
 1
 >>> transformed_i1 = i1.transformedShape()  # The original item is unchanged, but the transformed shape is.
 >>> print(transformed_i1.toString())
@@ -32,6 +32,8 @@ Contour {
 >>> i1.rotation()
 4.71238898038469
 ```
+
+For full documentation, see [libnest2d](https://github.com/tamasmeszaros/libnest2d). These bindings stay close to the original function signatures.
 
 Building
 ====
