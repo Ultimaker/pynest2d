@@ -14,7 +14,7 @@ find_package(libnest2d REQUIRED)
 find_package(Clipper REQUIRED)
 find_package(NLopt REQUIRED)
 find_package(Boost REQUIRED)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper -DLIBNEST2D_OPTIMIZERS_nlopt")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper -DLIBNEST2D_OPTIMIZERS_nlopt -DLIBNEST2D_THREADING_std")
 
 # Some build options.
 set(CMAKE_CXX_STANDARD 11)
