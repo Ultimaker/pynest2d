@@ -27,7 +27,7 @@ using namespace placers;
 /*!
  * Convert ranges of Item objects to and from Python lists.
  */
-%MappedType ItemRange
+%MappedType std::vector<Item*>
 {
     %TypeHeaderCode
         #include <utility>
@@ -36,7 +36,7 @@ using namespace placers;
     %End
 
     %ConvertFromTypeCode //From std::vector<Item> to Python list.
-        const long size = sipCpp->second - sipCpp->first;
+        const long size = sipCpp->size();
         if(size < 0)
         {
             return NULL;
@@ -46,16 +46,16 @@ using namespace placers;
         {
             return NULL;
         }
-        for(std::vector<Item>::iterator current = sipCpp->first; current != sipCpp->second; ++current)
+        for(size_t i = 0; i < size; ++i)
         {
-            Item* item = &*current;
+            Item* item = sipCpp->at(0);
             PyObject* python_item = sipConvertFromInstance(item, sipClass_Item, sipTransferObj);
             if(!python_item)
             {
                 Py_DECREF(result_list);
                 return NULL;
             }
-            PyList_SET_ITEM(result_list, current - sipCpp->first, python_item);
+            PyList_SET_ITEM(result_list, i, python_item);
         }
         return result_list;
     %End
@@ -70,7 +70,7 @@ using namespace placers;
             return iterable;
         }
 
-        std::vector<Item>* storage_vector = new std::vector<Item>();
+        std::vector<Item*>* storage_vector = new std::vector<Item*>();
         PyObject* list_item;
         while(list_item = PyIter_Next(iterator))
         {
@@ -84,7 +84,7 @@ using namespace placers;
             Item* item = reinterpret_cast<Item*>(sipConvertToInstance(list_item, sipClass_Item, 0, SIP_NOT_NONE, &state, sipIsErr));
             if(!*sipIsErr)
             {
-                storage_vector->push_back(*item);
+                storage_vector->push_back(item);
             }
 
             sipReleaseInstance(item, sipClass_Item, state);
@@ -97,14 +97,24 @@ using namespace placers;
             delete storage_vector;
             return 0;
         }
-        std::pair<std::vector<Item>::iterator, std::vector<Item>::iterator>* result_pair = new std::pair<std::vector<Item>::iterator, std::vector<Item>::iterator>(storage_vector->begin(), storage_vector->end());
-        
-        *sipCppPtr = result_pair;
+        *sipCppPtr = storage_vector;
         return sipGetState(sipTransferObj);
     %End
 };
 
-long nest(ItemRange items, Box bin);
+long nest(std::vector<Item*> items, Box bin);
 %MethodCode
-    sipRes = nest(a0->first, a0->second, *a1, 1, {});
+    std::vector<Item> to_arrange;
+    to_arrange.reserve(a0->size());
+    for(Item* item : *a0)
+    {
+        to_arrange.push_back(*item);
+    }
+
+    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, 1, {});
+
+    for(size_t i = 0; i < a0->size(); ++i)
+    {
+        *(a0->at(i)) = to_arrange[i];
+    }
 %End
