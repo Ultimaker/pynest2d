@@ -103,13 +103,15 @@ using namespace placers;
     %End
 };
 
-long nest(std::vector<Item*> items, Box bin, long distance = 1);
+long nest(std::vector<Item*> items, Box bin, long distance = 1, NfpConfig config = {});
 %MethodCode
+    //Pre-process distance.
     if(a2 <= 0)
     {
         a2 = 1; //Need to keep at least 1 unit of distance, or the nester breaks.
     }
 
+    //Pre-process items.
     std::vector<Item> to_arrange;
     to_arrange.reserve(a0->size());
     for(Item* item : *a0)
@@ -117,7 +119,10 @@ long nest(std::vector<Item*> items, Box bin, long distance = 1);
         to_arrange.push_back(*item);
     }
 
-    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, a2, {});
+    //Pre-process config.
+    NestConfig<> nest_config(*a3); //NestConfig wraps a placer and selector config. Only with the default selector there is no config, so just the placer then.
+
+    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, a2, nest_config);
 
     for(size_t i = 0; i < a0->size(); ++i)
     {
