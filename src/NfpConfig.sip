@@ -18,6 +18,9 @@ struct NfpConfig
         DONT_ALIGN
     };
 
+    Alignment alignment;
+    Alignment starting_point;
+
     std::vector<double> rotations
     {
         %GetCode
