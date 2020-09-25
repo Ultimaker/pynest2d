@@ -9,6 +9,7 @@
 %Include Circle.sip
 %Include DJDHeuristicConfig.sip
 %Include Item.sip
+%Include ItemGroup.sip
 %Include NfpConfig.sip
 %Include NfpPlacer.sip
 %Include Point.sip
@@ -61,7 +62,7 @@ using namespace placers;
         return result_list;
     %End
 
-    %ConvertToTypeCode //From Python list to range of iterators.
+    %ConvertToTypeCode //From Python list to vector of Items.
         PyObject* iterator = PyObject_GetIter(sipPy);
         if(!sipIsErr) //We're only checking if it can be converted.
         {

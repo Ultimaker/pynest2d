@@ -33,6 +33,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Circle.sip
     src/DJDHeuristicConfig.sip
     src/Item.sip
+    src/ItemGroup.sip
     src/NfpConfig.sip
     src/NfpPlacer.sip
     src/Point.sip
