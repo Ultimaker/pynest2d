@@ -34,6 +34,8 @@ public:
 
     int binId();
     void binId(int idx);
+    bool isFixed();
+    void markAsFixedInBin(int binid);
     int priority();
     void priority(int priority);
     std::string toString();
