@@ -102,24 +102,7 @@ using namespace placers;
     %End
 };
 
-long nest(std::vector<Item*> items, Box bin);
-%MethodCode
-    std::vector<Item> to_arrange;
-    to_arrange.reserve(a0->size());
-    for(Item* item : *a0)
-    {
-        to_arrange.push_back(*item);
-    }
-
-    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, 1, {});
-
-    for(size_t i = 0; i < a0->size(); ++i)
-    {
-        *(a0->at(i)) = to_arrange[i];
-    }
-%End
-
-long nest(std::vector<Item*> items, Box bin, long distance);
+long nest(std::vector<Item*> items, Box bin, long distance = 1);
 %MethodCode
     if(a2 <= 0)
     {
