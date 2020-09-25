@@ -123,7 +123,7 @@ long nest(std::vector<Item*> items, Box bin, long distance = 1, NfpConfig config
     //Pre-process config.
     NestConfig<> nest_config(*a3); //NestConfig wraps a placer and selector config. Only with the default selector there is no config, so just the placer then.
 
-    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, a2, nest_config);
+    sipRes = nest(to_arrange, *a1, a2, nest_config);
 
     for(size_t i = 0; i < a0->size(); ++i)
     {
