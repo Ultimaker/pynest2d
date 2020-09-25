@@ -6,7 +6,7 @@
     %TypeHeaderCode
         #include <utility>
         #include <vector>
-        using ItemGroup = NfpPlacer::ItemGroup; //Make an alias here since SIP doesn't namespace syntax nor template syntax.
+        using ItemGroup = PlacementStrategyLike<NfpPlacer>::ItemGroup; //Make an alias here since SIP doesn't namespace syntax nor template syntax.
     %End
 
     %ConvertFromTypeCode //From ItemGroup to Python list.
