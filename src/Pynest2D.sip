@@ -118,3 +118,25 @@ long nest(std::vector<Item*> items, Box bin);
         *(a0->at(i)) = to_arrange[i];
     }
 %End
+
+long nest(std::vector<Item*> items, Box bin, long distance);
+%MethodCode
+    if(a2 <= 0)
+    {
+        a2 = 1; //Need to keep at least 1 unit of distance, or the nester breaks.
+    }
+
+    std::vector<Item> to_arrange;
+    to_arrange.reserve(a0->size());
+    for(Item* item : *a0)
+    {
+        to_arrange.push_back(*item);
+    }
+
+    sipRes = nest(to_arrange.begin(), to_arrange.end(), *a1, a2, {});
+
+    for(size_t i = 0; i < a0->size(); ++i)
+    {
+        *(a0->at(i)) = to_arrange[i];
+    }
+%End
