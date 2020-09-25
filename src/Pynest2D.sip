@@ -7,6 +7,7 @@
 %Include BottomLeftPlacer.sip
 %Include Box.sip
 %Include Circle.sip
+%Include DJDHeuristicConfig.sip
 %Include Item.sip
 %Include NfpConfig.sip
 %Include NfpPlacer.sip

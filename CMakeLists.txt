@@ -31,6 +31,7 @@ set(SIP_EXTRA_FILES_DEPEND
     src/BottomLeftPlacer.sip
     src/Box.sip
     src/Circle.sip
+    src/DJDHeuristicConfig.sip
     src/Item.sip
     src/NfpConfig.sip
     src/NfpPlacer.sip
