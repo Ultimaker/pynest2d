@@ -3,11 +3,22 @@
 
 struct BottomLeftConfig
 {
-    %DocString
+    %Docstring "deindented"
         Configuration class for the BLPlacer class.
 
         With this you can configure some parameters on how the BLPlacer places
         objects.
+
+        The following attributes can be set:
+        * min_obj_distance (default 0):
+        Minimum distance between objects. This seems to not be used by libnest2d
+        at the moment.
+        * epsilon (default 1):
+        Resolution of placement. The lower the epsilon, the more placements will
+        be attempted, resulting in better placement but longer computation time.
+        * allow_rotations (default False):
+        Whether the placer is allowed to rotate the items. This placer will only
+        attempt 90 degree rotations if this setting is set to True.
     %End
     %TypeHeaderCode
         #include <libnest2d/libnest2d.hpp>
@@ -15,25 +26,6 @@ struct BottomLeftConfig
     %End
 
     long min_obj_distance;
-    %DocString
-        Minimum distance between objects.
-
-        This seems to not be used by libnest2d at the moment.
-    %End
-
     long epsilon;
-    %DocString
-        Resolution of placement.
-
-        The lower the epsilon, the more placements will be attempted, resulting
-        in better placement but longer computation time.
-    %End
-
     bool allow_rotations;
-    %DocString
-        Whether the placer is allowed to rotate the items.
-
-        This placer will only attempt 90 degree rotations if this setting is set
-        to True.
-    %End
 };
