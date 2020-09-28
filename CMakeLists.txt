@@ -28,7 +28,6 @@ endif()
 # Building and linking.
 set(SIP_EXTRA_FILES_DEPEND
     src/BottomLeftConfig.sip
-    src/BottomLeftPlacer.sip
     src/Box.sip
     src/Circle.sip
     src/DJDHeuristicConfig.sip

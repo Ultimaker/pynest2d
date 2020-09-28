@@ -4,7 +4,6 @@
 %Module(name = pynest2d, call_super_init = True)
 
 %Include BottomLeftConfig.sip
-%Include BottomLeftPlacer.sip
 %Include Box.sip
 %Include Circle.sip
 %Include DJDHeuristicConfig.sip
