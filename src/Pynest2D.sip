@@ -10,7 +10,6 @@
 %Include Item.sip
 %Include ItemGroup.sip
 %Include NfpConfig.sip
-%Include NfpPlacer.sip
 %Include Point.sip
 %Include Rectangle.sip
 %Include String.sip

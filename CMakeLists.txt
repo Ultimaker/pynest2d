@@ -34,7 +34,6 @@ set(SIP_EXTRA_FILES_DEPEND
     src/Item.sip
     src/ItemGroup.sip
     src/NfpConfig.sip
-    src/NfpPlacer.sip
     src/Point.sip
     src/Rectangle.sip
     src/String.sip
