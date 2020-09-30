@@ -103,7 +103,7 @@ using namespace placers;
     %End
 };
 
-long nest(std::vector<Item*> items, Box bin, long distance = 1, NfpConfig config = {});
+long nest(std::vector<Item*> items, Box bin, long distance = 1, NfpConfig config = NfpConfig());
 %MethodCode
     //Pre-process distance.
     if(a2 <= 0)
