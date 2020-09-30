@@ -103,6 +103,29 @@ using namespace placers;
 };
 
 long nest(std::vector<Item*> items, Box bin, long distance = 1, NfpConfig config = NfpConfig());
+%Docstring
+    Arrange a number of items in bins, packing them closely with the goal to
+    minimise the number of bins necessary to pack all given items.
+
+    This function uses the FirstFit selector and NfpPPlacer in its algorithms,
+    and Clipper as geometry back-end.
+
+    The result of the packing is stored in the transformation of the input
+    items. You can get the transformed items by calling transformedShape() on
+    each of the items, or by looking at their rotation and translation. Items
+    may also be placed on alternative bins if the first bin is not big enough to
+    fit all items.
+    :param items: An iterable of Item instances which are the items that need to
+    be placed in the bins.
+    :param bin: The shape in which to place these items.
+    :param distance: (Default 1.) The distance to hold between adjacent items in
+    the final pack result. Items will not get placed closer than this distance.
+    Must be at least 1 unit.
+    :param config: An NfpConfig instance that contains configuration options to
+    specialize how objects get placed. Defaults will be used if this is not
+    provided.
+    :return: The number of bins necessary to fit all items.
+%End
 %MethodCode
     //Pre-process distance.
     if(a2 <= 0)
