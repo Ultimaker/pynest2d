@@ -41,4 +41,5 @@ This library has a couple of dependencies that need to be installed prior to bui
 * [libnest2d](https://github.com/tamasmeszaros/libnest2d), the library for which this library offers CPython bindings, and its dependencies:
   * [Clipper](http://www.angusj.com/delphi/clipper.php), a polygon clipping library.
   * [NLopt](https://nlopt.readthedocs.io/en/latest/), a library to solve non-linear optimization problems.
-* [Sip](https://www.riverbankcomputing.com/software/sip/download), an application to create Python bindings more easily.
+  * [Boost](https://www.boost.org/), the headers only.
+* [Sip](https://www.riverbankcomputing.com/software/sip/download), an application to generate Python bindings more easily.
