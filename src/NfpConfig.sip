@@ -3,6 +3,24 @@
 
 struct NfpConfig
 {
+    %Docstring
+        This is a configuration structure to configure the NfpPPlacer. It has
+        several attributes to configure how it places items.
+
+        The following options are available:
+        * alignment (default CENTER):
+        Where to align the resulting packed pile.
+        * starting_point (default CENTER):
+        Where to start placing items in the bin.
+        * rotations (default [0, 0.5 * pi, pi, 1.5 * pi]):
+        Rotations to try to place the object in. More rotations may cause the objects to be packed closer together, but also significantly increases computation time.
+        * accuracy (default 0.65):
+        How far to search for the best placement. 0.0 is not very accurate, but computes fast. 1.0 is the best accuracy, but takes a lot of computation power.
+        * explore_holes (default False):
+        Whether to allow placing items inside holes in other shapes. This functionality doesn't currently work in libnest2d.
+        * parallel (default True):
+        Whether to try different options in multiple threads in parallel.
+    %End
     %TypeHeaderCode
         #include <libnest2d/libnest2d.hpp>
         using NfpConfig = NfpPConfig<ClipperLib::Polygon>; //Specialise the templated NfpPConfig class since SIP doesn't deal with templates.
