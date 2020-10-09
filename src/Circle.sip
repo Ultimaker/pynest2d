@@ -53,7 +53,7 @@ public:
     %Docstring
         Computes the area of the circle.
 
-        The area is only a function of the radius: pi * r^2.
+        The area is only a function of the radius: pi * r ** 2.
         :return: The area of the circle.
     %End
 };
