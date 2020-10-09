@@ -87,6 +87,18 @@ public:
         :return: Whether the item is fixed in a certain bin.
     %End
 
+    bool isDisallowedArea();
+    %Docstring
+        Whether this item is a disallowed area, not able to be moved by the
+        nester and not grouped together with other items.
+
+        If the item is a disallowed area, the nester is not allowed to move it
+        and not allowed to place other items in the same spot. Contrary to
+        simple fixed items, other items will not be packed nearby disallowed
+        areas by the optimization.
+        :return Whether the item is a disallowed area.
+    %End
+
     void markAsFixedInBin(int binid);
     %Docstring
         Make this item a fixed item in a certain bin.
@@ -97,6 +109,20 @@ public:
         This currently only works with the FirstFit selector (which is the
         default).
         :param binid: The bin in which this item is fixed.
+    %End
+
+    void markAsDisallowedAreaInBin(int binid);
+    %Docstring
+        Make this item a disallowed area in a certain bin.
+
+        If the item is a disallowed area, the nester is not allowed to move it
+        and not allowed to place other items in the same spot. Contrary to
+        simple fixed items, other items will not be packed nearby disallowed
+        areas by the optimization.
+
+        This currently only works with the FirstFit selector (which is the
+        default).
+        :param binid: The bin in which this item is a disallowed area.
     %End
 
     int priority();
