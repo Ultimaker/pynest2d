@@ -23,8 +23,8 @@ endif()
 
 #FIXME: Use the new FindPython3 module rather than these. New in CMake 3.12.
 #However currently that breaks on our CI server, since the CI server finds the built-in Python3.6 and then doesn't find the headers.
-find_package(PythonInterp 3.4 REQUIRED)
-find_package(PythonLibs 3.4 REQUIRED)
+find_package(PythonInterp 3.5 REQUIRED)
+find_package(PythonLibs 3.5 REQUIRED)
 
 #Define variables that are available in FindPython3, so there's no need to branch off in the later part.
 set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
