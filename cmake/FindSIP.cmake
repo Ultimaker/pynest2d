@@ -1,42 +1,38 @@
-# Find SIP
-# ~~~~~~~~
+#Find SIP
+#~~~~~~~~
 #
-# SIP website: http://www.riverbankcomputing.co.uk/sip/index.php
+#SIP website: http://www.riverbankcomputing.co.uk/sip/index.php
 #
-# Find the installed version of SIP. FindSIP should be called after Python
-# has been found.
+#Find the installed version of SIP. FindSIP should be called after Python has
+#been found.
 #
-# This file defines the following variables:
+#This file defines the following variables:
 #
-# SIP_VERSION - SIP version.
+#SIP_VERSION - SIP version.
+#SIP_EXECUTABLE - Path to the SIP executable.
+#SIP_INCLUDE_DIRS - The SIP include directories.
 #
-# SIP_EXECUTABLE - Path to the SIP executable.
-#
-# SIP_INCLUDE_DIRS - The SIP include directories.
-#
-
-# Copyright (c) 2007, Simon Edwards <simon@simonzone.com>
-# Redistribution and use is allowed according to the terms of the BSD license.
-# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+#Copyright (c) 2007, Simon Edwards <simon@simonzone.com>
+#Redistribution and use is allowed according to the terms of the BSD license.
+#For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 if(APPLE)
-    # Workaround for broken FindPythonLibs. It will always find Python 2.7 libs on OSX
+    #Workaround for broken FindPythonLibs. It will always find Python 2.7 libs on OSX.
     set(CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
-# FIXME: Use the new FindPython3 module rather than these. New in CMake 3.12.
-# However currently that breaks on our CI server, since the CI server finds the built-in Python3.6 and then doesn't find the headers.
+#FIXME: Use the new FindPython3 module rather than these. New in CMake 3.12.
+#However currently that breaks on our CI server, since the CI server finds the built-in Python3.6 and then doesn't find the headers.
 find_package(PythonInterp 3.4 REQUIRED)
 find_package(PythonLibs 3.4 REQUIRED)
 
-# Define variables that are available in FindPython3, so there's no need to branch off in the later part.
+#Define variables that are available in FindPython3, so there's no need to branch off in the later part.
 set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
 set(Python3_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
 set(Python3_LIBRARIES ${PYTHON_LIBRARIES})
 
 execute_process(
-   COMMAND ${Python3_EXECUTABLE} -c
-           "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(plat_specific=False,standard_lib=False))"
+   COMMAND ${Python3_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(plat_specific = False, standard_lib = False))"
    RESULT_VARIABLE _process_status
    OUTPUT_VARIABLE _process_output
    OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -48,8 +44,7 @@ else()
 endif()
 
 execute_process(
-   COMMAND ${Python3_EXECUTABLE} -c
-           "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(plat_specific=True,standard_lib=False))"
+   COMMAND ${Python3_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(plat_specific = True, standard_lib = False))"
    RESULT_VARIABLE _process_status
    OUTPUT_VARIABLE _process_output
    OUTPUT_STRIP_TRAILING_WHITESPACE

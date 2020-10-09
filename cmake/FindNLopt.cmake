@@ -1,11 +1,11 @@
-# Find NLopt library.
-# The following variables are set
+#Find NLopt library.
+#The following variables are set
 #
-# NLopt_FOUND
-# NLopt_INCLUDE_DIRS
-# NLopt_LIBRARIES
+#NLopt_FOUND
+#NLopt_INCLUDE_DIRS
+#NLopt_LIBRARIES
 #
-# It searches the environment variable $NLopt_PATH automatically.
+#It searches the environment variable $NLopt_PATH automatically.
 
 unset(NLopt_FOUND CACHE)
 unset(NLopt_INCLUDE_DIRS CACHE)
@@ -13,13 +13,13 @@ unset(NLopt_LIBRARIES CACHE)
 unset(NLopt_LIBRARIES_RELEASE CACHE)
 unset(NLopt_LIBRARIES_DEBUG CACHE)
 
-if(CMAKE_BUILD_TYPE MATCHES "(Debug|DEBUG|debug)")
+if($<LOWER_CASE:${CMAKE_BUILD_TYPE}> EQUAL "debug")
     set(NLopt_BUILD_TYPE DEBUG)
 else()
     set(NLopt_BUILD_TYPE RELEASE)
 endif()
 
-FIND_PATH(NLopt_INCLUDE_DIRS nlopt.hpp
+find_path(NLopt_INCLUDE_DIRS nlopt.hpp
     $ENV{NLopt_PATH}
     $ENV{NLopt_PATH}/cpp/
     $ENV{NLopt_PATH}/include/
@@ -30,7 +30,8 @@ FIND_PATH(NLopt_INCLUDE_DIRS nlopt.hpp
     /usr/local/include/
     /usr/local/include/nlopt/
     /usr/include
-    /usr/include/nlopt/)
+    /usr/include/nlopt/
+)
 
 set(LIB_SEARCHDIRS 
     $ENV{NLopt_PATH}
@@ -49,8 +50,8 @@ set(LIB_SEARCHDIRS
 
 set(_deb_postfix "d")
 
-FIND_LIBRARY(NLopt_LIBRARIES_RELEASE nlopt ${LIB_SEARCHDIRS})
-FIND_LIBRARY(NLopt_LIBRARIES_DEBUG nlopt${_deb_postfix} ${LIB_SEARCHDIRS})
+find_library(NLopt_LIBRARIES_RELEASE nlopt ${LIB_SEARCHDIRS})
+find_library(NLopt_LIBRARIES_DEBUG nlopt${_deb_postfix} ${LIB_SEARCHDIRS})
 
 if(NLopt_LIBRARIES_${NLopt_BUILD_TYPE})
     set(NLopt_LIBRARIES "${NLopt_LIBRARIES_${NLopt_BUILD_TYPE}}")
@@ -59,14 +60,13 @@ else()
 endif()
 
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(NLopt
+find_package_handle_standard_args(NLopt
     "NLopt library cannot be found. Consider set NLopt_PATH environment variable"
     NLopt_INCLUDE_DIRS
-    NLopt_LIBRARIES)
+    NLopt_LIBRARIES
+)
 
-MARK_AS_ADVANCED(
-    NLopt_INCLUDE_DIRS
-    NLopt_LIBRARIES)
+mark_as_advanced(NLopt_INCLUDE_DIRS NLopt_LIBRARIES)
 
 if(NLopt_FOUND)
     add_library(NLopt::nlopt UNKNOWN IMPORTED)
