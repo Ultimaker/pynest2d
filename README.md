@@ -38,7 +38,7 @@ For full documentation, see [libnest2d](https://github.com/tamasmeszaros/libnest
 Building
 ====
 This library has a couple of dependencies that need to be installed prior to building:
-* [libnest2d](https://github.com/tamasmeszaros/libnest2d), the library for which this library offers CPython bindings, and its dependencies:
+* [libnest2d](https://github.com/Ultimaker/libnest2d), the library for which this library offers CPython bindings, and its dependencies:
   * [Clipper](http://www.angusj.com/delphi/clipper.php), a polygon clipping library.
   * [NLopt](https://nlopt.readthedocs.io/en/latest/), a library to solve non-linear optimization problems.
   * [Boost](https://www.boost.org/), the headers only.
