@@ -7,8 +7,19 @@ cmake_minimum_required(VERSION 3.6)  # Lowest version it's been tested with.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Requirements.
-find_package(PythonInterp 3.5 REQUIRED)  # Dependency of SIP.
-find_package(PythonLibs 3.5 REQUIRED)  # Dependency of SIP.
+# FIXME: Remove the code for CMake <3.12 once we have switched over completely.
+# FindPython3 is a new module since CMake 3.12. It deprecates FindPythonInterp and FindPythonLibs.
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    # FIXME: Use FindPython3 to find Python, new in CMake 3.12.
+    # However currently on our CI server it finds the wrong Python version and then doesn't find the headers.
+    find_package(PythonInterp 3.5 REQUIRED)
+    find_package(PythonLibs 3.5 REQUIRED)
+
+else()
+    # Use FindPython3 for CMake >=3.12
+    find_package(Python3 3.5 REQUIRED COMPONENTS Interpreter Development)
+endif()
+
 find_package(SIP REQUIRED)  # To create Python bindings.
 find_package(libnest2d REQUIRED)  # The library we're creating bindings for.
 find_package(Clipper REQUIRED)  # Dependency of libnest2d.
