@@ -1,20 +1,20 @@
-#Macros for SIP
-#~~~~~~~~~~~~~~
-#Copyright (c) 2007, Simon Edwards <simon@simonzone.com>
-#Redistribution and use is allowed according to the terms of the BSD license.
-#For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+# Macros for SIP
+# ~~~~~~~~~~~~~~
+# Copyright (c) 2007, Simon Edwards <simon@simonzone.com>
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
-#SIP website: http://www.riverbankcomputing.co.uk/sip/index.php
+# SIP website: http://www.riverbankcomputing.co.uk/sip/index.php
 #
-#This file defines the following macros:
+# This file defines the following macros:
 #
-#ADD_SIP_PYTHON_MODULE (MODULE_NAME MODULE_SIP [library1, libaray2, ...])
-#    Specifies a SIP file to be built into a Python module and installed.
-#    MODULE_NAME is the name of Python module including any path name. (e.g.
-#    os.sys, Foo.bar etc). MODULE_SIP the path and filename of the .sip file to
-#    process and compile. libraryN are libraries that the Python module, which
-#    is typically a shared library, should be linked to. The built module will
-#    also be installed into Python's site-packages directory.
+# ADD_SIP_PYTHON_MODULE (MODULE_NAME MODULE_SIP [library1, libaray2, ...])
+#     Specifies a SIP file to be built into a Python module and installed.
+#     MODULE_NAME is the name of Python module including any path name. (e.g.
+#     os.sys, Foo.bar etc). MODULE_SIP the path and filename of the .sip file
+#     to process and compile. libraryN are libraries that the Python module,
+#     which is typically a shared library, should be linked to. The built
+#     module will also be install into Python's site-packages directory.
 #
 #The behaviour of the ADD_SIP_PYTHON_MODULE macro can be controlled by a number
 #of variables:
@@ -111,10 +111,6 @@ macro(ADD_SIP_PYTHON_MODULE MODULE_NAME MODULE_SIP)
     else(CYGWIN OR APPLE)
         add_library(${_logical_name} SHARED ${_sip_output_files} ${SIP_EXTRA_SOURCE_FILES})
     endif(CYGWIN OR APPLE)
-    if(NOT APPLE)
-        target_link_libraries(${_logical_name} ${Python3_LIBRARIES})
-    endif(NOT APPLE)
-    target_link_libraries(${_logical_name} ${EXTRA_LINK_LIBRARIES})
     if(APPLE)
         set_target_properties(${_logical_name} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
     endif(APPLE)
