@@ -7,21 +7,23 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
 
 class pynest2dConan(ConanFile):
     name = "pynest2d"
-    version = "4.10.0"
+    version = "4.11.0"
     license = "LGPL-3.0"
     author = "Ultimaker B.V."
     url = "https://github.com/Ultimaker/pynest2d"
     description = "Python bindings for libnest2d"
     topics = ("conan", "cura", "prusaslicer", "nesting", "c++", "bin packaging", "python", "sip")
     settings = "os", "compiler", "build_type", "arch"
+    revision_mode = "scm"
+    build_policy = "missing"
     exports = "LICENSE"
     options = {
         "shared": [True, False],
-        "python_version": "ANY"
+        "fPIC": [True, False]
     }
     default_options = {
         "shared": True,
-        "python_version": "3.8"
+        "fPIC": True
     }
     scm = {
         "type": "git",
@@ -30,14 +32,9 @@ class pynest2dConan(ConanFile):
         "revision": "auto"
     }
 
-    def config_options(self):
-        if self.settings.os == "Windows" and self.settings.compiler == "gcc":
-            self.options.python = False
-
     def configure(self):
         if self.options.shared or self.settings.compiler == "Visual Studio":
             del self.options.fPIC
-        self.options["SIP"].python_version = self.options.python_version
         self.options["SIP"].shared = self.options.shared
         self.options["libnest2d"].geometries = "clipper"
         self.options["libnest2d"].optimizer = "nlopt"
@@ -49,7 +46,8 @@ class pynest2dConan(ConanFile):
 
     def requirements(self):
         self.requires("SIP/[>=4.19.24]@riverbankcomputing/testing")
-        self.requires(f"libnest2d/4.10.0@ultimaker/testing")
+        self.requires("Python/3.8.10@python/testing")
+        self.requires(f"libnest2d/4.11.0@ultimaker/testing")
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
@@ -68,7 +66,7 @@ class pynest2dConan(ConanFile):
 
         tc.variables["ALLOW_IN_SOURCE_BUILD"] = True
         tc.variables["SIP_MODULE_SITE_PATH"] = "site-packages"
-        tc.variables["Python_VERSION"] = self.options.python_version
+        tc.variables["Python_VERSION"] = self.deps_cpp_info["Python"].version
         tc.generate()
 
     _cmake = None
