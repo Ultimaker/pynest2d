@@ -48,8 +48,7 @@ endif()
 
 find_package(Threads)
 find_package(clipper)
-find_package(NLopt)
-target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads NLopt::nlopt clipper::clipper)
+target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads clipper::clipper)
 
 add_sip_module(pynest2d)
 install_sip_module(pynest2d)
