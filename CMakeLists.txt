@@ -47,7 +47,9 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 endif()
 
 find_package(Threads)
-target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads)
+find_package(clipper)
+find_package(NLopt)
+target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads NLopt::nlopt clipper::clipper)
 
 add_sip_module(pynest2d)
 install_sip_module(pynest2d)
