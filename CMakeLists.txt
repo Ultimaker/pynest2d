@@ -2,59 +2,52 @@
 # pynest2d is released under the terms of the LGPLv3 or higher.
 
 project(pynest2d)
-cmake_minimum_required(VERSION 3.6)  # Lowest version it's been tested with.
+cmake_minimum_required(VERSION 3.18)  # Lowest version it's been tested with.
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Requirements.
-# FIXME: Remove the code for CMake <3.12 once we have switched over completely.
-# FindPython3 is a new module since CMake 3.12. It deprecates FindPythonInterp and FindPythonLibs.
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    # FIXME: Use FindPython3 to find Python, new in CMake 3.12.
-    # However currently on our CI server it finds the wrong Python version and then doesn't find the headers.
-    find_package(PythonInterp 3.5 REQUIRED)
-    find_package(PythonLibs 3.5 REQUIRED)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-else()
-    # Use FindPython3 for CMake >=3.12
-    find_package(Python3 3.5 REQUIRED COMPONENTS Interpreter Development)
+if(NOT DEFINED Python_VERSION)
+    set(Python_VERSION
+            3.10
+            CACHE STRING "Python Version" FORCE)
+    message(STATUS "Setting Python version to ${Python_VERSION}. Set Python_VERSION if you want to compile against an other version.")
 endif()
+if(APPLE)
+    set(Python_FIND_FRAMEWORK NEVER)
+endif()
+find_package(Python ${Python_VERSION} EXACT REQUIRED COMPONENTS Interpreter Development)
+message(STATUS "Linking and building ${project_name} against Python ${Python_VERSION}")
 
-find_package(SIP REQUIRED)  # To create Python bindings.
+find_package(SIP REQUIRED 6.5.0)
+
 find_package(libnest2d REQUIRED)  # The library we're creating bindings for.
-find_package(Clipper REQUIRED)  # Dependency of libnest2d.
-find_package(NLopt REQUIRED)  # Dependency of libnest2d.
-find_package(Boost REQUIRED)  # Dependency of libnest2d.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLIBNEST2D_GEOMETRIES_clipper -DLIBNEST2D_OPTIMIZERS_nlopt -DLIBNEST2D_THREADING_std")  # Tell libnest2d to use Clipper and NLopt, and standard threads.
 
-# Some build options.
+add_library(pynest2d INTERFACE)
+
+target_include_directories(pynest2d
+        INTERFACE
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/>
+        )
+
+# Use C++17 Standard
+message(STATUS "Setting C++17 support with extensions off and standard required")
 set(CMAKE_CXX_STANDARD 17)
-if(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
-if(UNIX)
-    # Want to be able to move symbols from the Clipper library.
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-endif()
-if(NOT DEFINED LIB_SUFFIX)
-    set(LIB_SUFFIX "")
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+target_compile_features(pynest2d INTERFACE cxx_std_17)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    if (APPLE)
+        message(STATUS "Compiling ${project_name} against libc++")
+        target_compile_options(pynest2d INTERFACE "-stdlib=libc++")
+    endif()
 endif()
 
-# Building and linking.
-set(SIP_EXTRA_FILES_DEPEND
-    src/BottomLeftConfig.sip
-    src/Box.sip
-    src/Circle.sip
-    src/DJDHeuristicConfig.sip
-    src/Item.sip
-    src/ItemGroup.sip
-    src/NfpConfig.sip
-    src/Point.sip
-    src/Rectangle.sip
-    src/String.sip
-)
+find_package(Threads)
+target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads)
 
-set(SIP_EXTRA_OPTIONS -g -n PyQt5.sip)  # Always release the GIL before calling C++ methods. -n PyQt5.sip is required to not get the PyCapsule error
-include_directories(src/ ${SIP_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS} ${CLIPPER_INCLUDE_DIRS} ${NLopt_INCLUDE_DIRS} ${LIBNEST2D_INCLUDE_DIRS})
-add_sip_python_module(pynest2d src/Pynest2D.sip ${CLIPPER_LIBRARIES} ${NLopt_LIBRARIES})
+add_sip_module(pynest2d)
+install_sip_module(pynest2d)
