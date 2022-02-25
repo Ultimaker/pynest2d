@@ -32,7 +32,7 @@ set_property(TARGET libnest2d::libnest2d
         PROPERTY INTERFACE_INCLUDE_DIRECTORIES
         ${libnest2d_INCLUDE_DIRS} APPEND)
 
-find_library(libnest2d_LIBRARIES_TARGETS NAMES libnest2d_clipper_nlopt
+find_library(libnest2d_LIBRARIES_TARGETS NAMES nest2d_clipper_nlopt
         HINTS
         ${libnest2d_PACKAGE_FOLDER}/lib
         ${PC_LIBNEST2D_LIBDIR}
@@ -46,9 +46,11 @@ find_library(libnest2d_LIBRARIES_TARGETS NAMES libnest2d_clipper_nlopt
         /usr/lib
         /usr/lib/libnest2d/
         )
-set_property(TARGET libnest2d::libnest2d
-        PROPERTY INTERFACE_LINK_LIBRARIES
-        ${libnest2d_LIBRARIES_TARGETS} APPEND)
+if(libnest2d_LIBRARIES_TARGETS)
+    set_property(TARGET libnest2d::libnest2d
+            PROPERTY INTERFACE_LINK_LIBRARIES
+            ${libnest2d_LIBRARIES_TARGETS} APPEND)
+endif()
 
 set(libnest2d_COMPILE_DEFINITIONS
         "LIBNEST2D_GEOMETRIES_clipper"
