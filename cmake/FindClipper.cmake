@@ -74,11 +74,11 @@ find_package_handle_standard_args(Clipper
 mark_as_advanced(CLIPPER_INCLUDE_DIRS CLIPPER_LIBRARIES)
 
 if(CLIPPER_FOUND)
-    add_library(Clipper::Clipper UNKNOWN IMPORTED)
-    set_target_properties(Clipper::Clipper PROPERTIES IMPORTED_LOCATION ${CLIPPER_LIBRARIES})
-    set_target_properties(Clipper::Clipper PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CLIPPER_INCLUDE_DIRS})
+    add_library(clipper::clipper UNKNOWN IMPORTED)
+    set_target_properties(clipper::clipper PROPERTIES IMPORTED_LOCATION ${CLIPPER_LIBRARIES})
+    set_target_properties(clipper::clipper PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CLIPPER_INCLUDE_DIRS})
     if(CLIPPER_LIBRARIES_RELEASE AND CLIPPER_LIBRARIES_DEBUG)
-        set_target_properties(Clipper::Clipper PROPERTIES
+        set_target_properties(clipper::clipper PROPERTIES
             IMPORTED_LOCATION_DEBUG          ${CLIPPER_LIBRARIES_DEBUG}
             IMPORTED_LOCATION_RELWITHDEBINFO ${CLIPPER_LIBRARIES_RELEASE}
             IMPORTED_LOCATION_RELEASE        ${CLIPPER_LIBRARIES_RELEASE}
