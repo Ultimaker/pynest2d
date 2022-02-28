@@ -67,7 +67,7 @@ else()
 endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Clipper
+find_package_handle_standard_args(clipper
     "Clipper library cannot be found.  Consider set CLIPPER_PATH environment variable"
     CLIPPER_INCLUDE_DIRS
     CLIPPER_LIBRARIES
