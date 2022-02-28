@@ -20,6 +20,7 @@ else()
 endif()
 
 find_path(NLopt_INCLUDE_DIRS nlopt.hpp
+    ${NLopt_PACKAGE_FOLDER}/include
     $ENV{NLopt_PATH}
     $ENV{NLopt_PATH}/cpp/
     $ENV{NLopt_PATH}/include/
@@ -33,7 +34,8 @@ find_path(NLopt_INCLUDE_DIRS nlopt.hpp
     /usr/include/nlopt/
 )
 
-set(LIB_SEARCHDIRS 
+set(LIB_SEARCHDIRS
+    ${NLopt_PACKAGE_FOLDER}/lib
     $ENV{NLopt_PATH}
     $ENV{NLopt_PATH}/cpp/
     $ENV{NLopt_PATH}/cpp/build/
@@ -69,7 +71,16 @@ find_package_handle_standard_args(NLopt
 mark_as_advanced(NLopt_INCLUDE_DIRS NLopt_LIBRARIES)
 
 if(NLopt_FOUND)
-    add_library(NLopt::nlopt UNKNOWN IMPORTED)
+    add_library(NLopt::nlopt INTERFACE IMPORTED)
+    set_property(TARGET NLopt::nlopt
+            PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+            ${NLopt_INCLUDE_DIRS} APPEND)
+    if(NLopt_LIBRARIES)
+        set_property(TARGET NLopt::nlopt
+                PROPERTY INTERFACE_LINK_LIBRARIES
+                ${NLopt_LIBRARIES} APPEND)
+    endif()
+
     set_target_properties(NLopt::nlopt PROPERTIES IMPORTED_LOCATION ${NLopt_LIBRARIES})
     set_target_properties(NLopt::nlopt PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${NLopt_INCLUDE_DIRS})
     if(NLopt_LIBRARIES_RELEASE AND NLopt_LIBRARIES_DEBUG)

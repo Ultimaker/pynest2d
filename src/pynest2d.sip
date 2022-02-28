@@ -1,4 +1,4 @@
-//Copyright (c) 2020 Ultimaker B.V.
+//Copyright (c) 2022 Ultimaker B.V.
 //pynest2d is released under the terms of the LGPLv3 or higher.
 
 %Module(name = pynest2d, call_super_init = True)
@@ -15,6 +15,7 @@
 %Include String.sip
 
 %ModuleHeaderCode
+#include <libnest2d/backends/clipper/geometries.hpp>
 #include <libnest2d/optimizers/nlopt/subplex.hpp> //Use the Subplex local optimizer. Also imported by libnest2d.hpp but somehow this needs to be imported in correct order!
 #include <libnest2d/libnest2d.hpp>
 namespace libnest2d{
@@ -49,7 +50,7 @@ using namespace placers;
         for(size_t i = 0; i < size; ++i)
         {
             Item* item = sipCpp->at(0);
-            PyObject* python_item = sipConvertFromInstance(item, sipClass_Item, sipTransferObj);
+            PyObject* python_item = sipConvertFromType(item, sipType_Item, sipTransferObj);
             if(!python_item)
             {
                 Py_DECREF(result_list);
@@ -74,20 +75,20 @@ using namespace placers;
         PyObject* list_item;
         while(list_item = PyIter_Next(iterator))
         {
-            if(!sipCanConvertToInstance(list_item, sipClass_Item, SIP_NOT_NONE))
+            if(!sipCanConvertToType(list_item, sipType_Item, SIP_NOT_NONE))
             {
                 PyErr_Format(PyExc_TypeError, "Object in iterable cannot be converted to a libnest2d Item.");
                 *sipIsErr = 1;
                 break;
             }
             int state;
-            Item* item = reinterpret_cast<Item*>(sipConvertToInstance(list_item, sipClass_Item, 0, SIP_NOT_NONE, &state, sipIsErr));
+            Item* item = reinterpret_cast<Item*>(sipConvertToType(list_item, sipType_Item, 0, SIP_NOT_NONE, &state, sipIsErr));
             if(!*sipIsErr)
             {
                 storage_vector->push_back(item);
             }
 
-            sipReleaseInstance(item, sipClass_Item, state);
+            sipReleaseType(item, sipType_Item, state);
             Py_DECREF(list_item);
         }
 

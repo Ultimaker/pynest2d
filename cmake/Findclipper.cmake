@@ -20,6 +20,7 @@ else()
 endif()
 
 find_path(CLIPPER_INCLUDE_DIRS clipper.hpp
+    ${clipper_PACKAGE_FOLDER}/include
     $ENV{CLIPPER_PATH}
     $ENV{CLIPPER_PATH}/cpp/
     $ENV{CLIPPER_PATH}/include/
@@ -36,7 +37,8 @@ find_path(CLIPPER_INCLUDE_DIRS clipper.hpp
     /usr/include/polyclipping/
 )
 
-set(LIB_SEARCHDIRS 
+set(LIB_SEARCHDIRS
+    ${clipper_PACKAGE_FOLDER}/lib
     $ENV{CLIPPER_PATH}
     $ENV{CLIPPER_PATH}/cpp/
     $ENV{CLIPPER_PATH}/cpp/build/
@@ -65,7 +67,7 @@ else()
 endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Clipper
+find_package_handle_standard_args(clipper
     "Clipper library cannot be found.  Consider set CLIPPER_PATH environment variable"
     CLIPPER_INCLUDE_DIRS
     CLIPPER_LIBRARIES
@@ -74,15 +76,13 @@ find_package_handle_standard_args(Clipper
 mark_as_advanced(CLIPPER_INCLUDE_DIRS CLIPPER_LIBRARIES)
 
 if(CLIPPER_FOUND)
-    add_library(Clipper::Clipper UNKNOWN IMPORTED)
-    set_target_properties(Clipper::Clipper PROPERTIES IMPORTED_LOCATION ${CLIPPER_LIBRARIES})
-    set_target_properties(Clipper::Clipper PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CLIPPER_INCLUDE_DIRS})
-    if(CLIPPER_LIBRARIES_RELEASE AND CLIPPER_LIBRARIES_DEBUG)
-        set_target_properties(Clipper::Clipper PROPERTIES
-            IMPORTED_LOCATION_DEBUG          ${CLIPPER_LIBRARIES_DEBUG}
-            IMPORTED_LOCATION_RELWITHDEBINFO ${CLIPPER_LIBRARIES_RELEASE}
-            IMPORTED_LOCATION_RELEASE        ${CLIPPER_LIBRARIES_RELEASE}
-            IMPORTED_LOCATION_MINSIZEREL     ${CLIPPER_LIBRARIES_RELEASE}
-        )
+    add_library(clipper::clipper INTERFACE IMPORTED)
+    if(CLIPPER_LIBRARIES)
+        set_property(TARGET clipper::clipper
+                PROPERTY INTERFACE_LINK_LIBRARIES
+                ${CLIPPER_LIBRARIES} APPEND)
     endif()
+    set_property(TARGET clipper::clipper
+            PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+            ${CLIPPER_INCLUDE_DIRS} APPEND)
 endif()
