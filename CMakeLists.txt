@@ -33,6 +33,7 @@ set_rpath(TARGETS
             "$<$<PLATFORM_ID:Linux>:usr/bin>"
             "$<$<PLATFORM_ID:Linux>:usr/bin/lib>"
             "$<$<PLATFORM_ID:Darwin>:../lib>"
+            "../../"
           RELATIVE)
 
 target_include_directories(pynest2d
