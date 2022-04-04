@@ -24,7 +24,7 @@ else()
     add_library(Python::Python ALIAS cpython::python)
     set(Python_SITEARCH "${CMAKE_INSTALL_PREFIX}/lib/python3.10/site-packages")
     set(Python_EXECUTABLE ${cpython_PACKAGE_FOLDER_RELEASE}/bin/python3)
-    set($ENV{PYTHONPATH} ${Python_SITEARCH})
+    set(ENV{PYTHONPATH} ${Python_SITEARCH})
 endif()
 message(STATUS "Using Python ${Python_VERSION}")
 
