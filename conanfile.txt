@@ -1,0 +1,11 @@
+[requires]
+nlopt/2.7.0
+clipper/6.4.2
+boost/1.70.0
+
+[generators]
+virtualrunenv
+CMakeDeps
+CMakeToolchain
+
+[options]
