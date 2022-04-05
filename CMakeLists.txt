@@ -2,9 +2,9 @@
 # pynest2d is released under the terms of the LGPLv3 or higher.
 
 project(pynest2d)
-cmake_minimum_required(VERSION 3.18)  # Lowest version it's been tested with.
+cmake_minimum_required(VERSION 3.20)  # Lowest version it's been tested with.
 include(cmake/StandardProjectSettings.cmake)
-include(cmake/conan.cmake)
+
 AssureOutOfSourceBuilds()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
