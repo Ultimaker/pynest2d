@@ -57,7 +57,7 @@ target_compile_features(pynest2d INTERFACE cxx_std_17)
 find_package(Threads)
 find_package(clipper)
 find_package(NLopt)
-find_package(boost)
+find_package(Boost)
 target_link_libraries(pynest2d INTERFACE Libnest2D::libnest2d Python::Python Threads::Threads clipper::clipper NLopt::nlopt boost::boost)
 
 add_sip_module(pynest2d)
