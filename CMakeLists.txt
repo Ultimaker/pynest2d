@@ -52,8 +52,6 @@ target_include_directories(pynest2d
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/>
         )
 
-target_compile_features(pynest2d INTERFACE cxx_std_17)
-
 find_package(Threads)
 find_package(clipper)
 find_package(NLopt)
