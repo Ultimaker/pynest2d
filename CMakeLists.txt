@@ -41,7 +41,7 @@ set_rpath(TARGETS
             "$<$<PLATFORM_ID:Linux>:usr/bin/lib>"
             "$<$<PLATFORM_ID:Darwin>:../lib>"
             "$<$<PLATFORM_ID:Darwin>:../Resources/lib>"
-            "../../"
+            "../../"  # In distributions of Cura, the libnest2d dependency is 2 directories up from where pynest2d gets installed.
           RELATIVE)
 
 target_include_directories(pynest2d
