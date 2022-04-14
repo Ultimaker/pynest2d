@@ -5,8 +5,6 @@ project(pynest2d)
 cmake_minimum_required(VERSION 3.20)  # Lowest version it's been tested with.
 include(cmake/StandardProjectSettings.cmake)
 
-AssureOutOfSourceBuilds()
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 if(NOT DEFINED Python_VERSION)
