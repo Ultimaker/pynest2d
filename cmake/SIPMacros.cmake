@@ -21,7 +21,7 @@ function(add_sip_module MODULE_TARGET)
 
     message(STATUS "SIP: Generating source files")
     execute_process(
-            COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=$ENV{PYTHONPATH}${env_path_sep}${CMAKE_CURRENT_BINARY_DIR}" ${SIP_BUILD_EXECUTABLE} ${SIP_ARGS}
+            COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=${PYTHONPATH}${env_path_sep}$ENV{PYTHONPATH}${env_path_sep}${CMAKE_CURRENT_BINARY_DIR}" ${SIP_BUILD_EXECUTABLE} ${SIP_ARGS}
             COMMAND_ECHO STDOUT
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
     )
@@ -50,10 +50,15 @@ function(add_sip_module MODULE_TARGET)
     # create the target library and link all the files (generated and user specified
     message(STATUS "SIP: Linking the interface target against the shared library")
     set(sip_sources "${sip_c}" "${sip_cpp}")
-    if(usr_src)
-        list(sip_sources APPEND "${usr_src}")
+    if(${usr_src})
+        list(APPEND sip_sources "${usr_src}")
     endif()
-    add_library("sip_${MODULE_TARGET}" SHARED ${sip_sources})
+
+    if (BUILD_SHARED_LIBS)
+        add_library("sip_${MODULE_TARGET}" SHARED ${sip_sources})
+    else()
+        add_library("sip_${MODULE_TARGET}" STATIC ${sip_sources})
+    endif()
 
     # Make sure that the library name of the target is the same as the MODULE_TARGET with the appropriate extension
     target_link_libraries("sip_${MODULE_TARGET}" PRIVATE "${MODULE_TARGET}")
@@ -61,11 +66,23 @@ function(add_sip_module MODULE_TARGET)
     set_target_properties("sip_${MODULE_TARGET}" PROPERTIES SUFFIX ${ext})
     set_target_properties("sip_${MODULE_TARGET}" PROPERTIES OUTPUT_NAME "${MODULE_TARGET}")
 
+    # Make sure all rpaths are set from the INTERFACE target
+    get_target_property(_SKIP_BUILD_RPATH ${MODULE_TARGET} SKIP_BUILD_RPATH)
+    set_target_properties("sip_${MODULE_TARGET}" PROPERTIES SKIP_BUILD_RPATH "${_SKIP_BUILD_RPATH}")
+    get_target_property(_BUILD_WITH_INSTALL_RPATH ${MODULE_TARGET} BUILD_WITH_INSTALL_RPATH)
+    set_target_properties("sip_${MODULE_TARGET}" PROPERTIES BUILD_WITH_INSTALL_RPATH "${_BUILD_WITH_INSTALL_RPATH}")
+    get_target_property(_INSTALL_RPATH_USE_LINK_PATH ${MODULE_TARGET} INSTALL_RPATH_USE_LINK_PATH)
+    set_target_properties("sip_${MODULE_TARGET}" PROPERTIES INSTALL_RPATH_USE_LINK_PATH "${_INSTALL_RPATH_USE_LINK_PATH}")
+    get_target_property(_MACOSX_RPATH ${MODULE_TARGET} MACOSX_RPATH)
+    set_target_properties("sip_${MODULE_TARGET}" PROPERTIES MACOSX_RPATH "${_MACOSX_RPATH}")
+    get_target_property(_INSTALL_RPATH ${MODULE_TARGET} INSTALL_RPATH)
+    set_target_properties("sip_${MODULE_TARGET}" PROPERTIES INSTALL_RPATH "${_INSTALL_RPATH}")
+
     # Add the custom command to (re-)generate the files and mark them as dirty. This allows the user to actually work
     # on the sip definition files without having to reconfigure the complete project.
     add_custom_command(
             TARGET "sip_${MODULE_TARGET}"
-            COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=$ENV{PYTHONPATH}${env_path_sep}${CMAKE_CURRENT_BINARY_DIR}" ${SIP_BUILD_EXECUTABLE} ${SIP_ARGS}
+            COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=${PYTHONPATH}${env_path_sep}$ENV{PYTHONPATH}${env_path_sep}${CMAKE_CURRENT_BINARY_DIR}" ${SIP_BUILD_EXECUTABLE} ${SIP_ARGS}
             COMMAND ${CMAKE_COMMAND} -E touch ${_sip_output_files}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
             MAIN_DEPENDENCY ${MODULE_SIP}
