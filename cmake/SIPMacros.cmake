@@ -53,7 +53,12 @@ function(add_sip_module MODULE_TARGET)
     if(${usr_src})
         list(APPEND sip_sources "${usr_src}")
     endif()
-    add_library("sip_${MODULE_TARGET}" SHARED ${sip_sources})
+
+    if (BUILD_SHARED_LIBS)
+        add_library("sip_${MODULE_TARGET}" SHARED ${sip_sources})
+    else()
+        add_library("sip_${MODULE_TARGET}" STATIC ${sip_sources})
+    endif()
 
     # Make sure that the library name of the target is the same as the MODULE_TARGET with the appropriate extension
     target_link_libraries("sip_${MODULE_TARGET}" PRIVATE "${MODULE_TARGET}")
