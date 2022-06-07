@@ -1,6 +1,9 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # pynest2d is released under the terms of the LGPLv3 or higher.
 
+# For MSVC flags, will be ignored on non-Windows OS's
+cmake_policy(SET CMP0091 NEW)
+
 project(pynest2d)
 cmake_minimum_required(VERSION 3.20)  # Lowest version it's been tested with.
 include(cmake/StandardProjectSettings.cmake)
