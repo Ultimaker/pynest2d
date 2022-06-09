@@ -32,7 +32,7 @@ message(STATUS "Linking and building ${project_name} against Python ${Python_VER
 
 find_package(SIP REQUIRED 6.5.0)
 
-find_package(Libnest2D REQUIRED)  # The library we're creating bindings for.
+find_package(libnest2d REQUIRED)  # The library we're creating bindings for.
 
 add_library(pynest2d INTERFACE)
 set_project_standards(pynest2d)
@@ -54,10 +54,8 @@ target_include_directories(pynest2d
         )
 
 find_package(Threads)
-find_package(clipper)
-find_package(NLopt)
-find_package(Boost)
-target_link_libraries(pynest2d INTERFACE Libnest2D::libnest2d Python::Python Threads::Threads clipper::clipper NLopt::nlopt boost::boost)
+
+target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads)
 
 add_sip_module(pynest2d)
 if(Python_SITELIB_LOCAL)
