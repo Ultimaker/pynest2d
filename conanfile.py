@@ -41,7 +41,7 @@ class PyNest2DConan(ConanFile):
         self.tool_requires("cmake/[>=3.23.0]")
 
     def requirements(self):
-        self.requires("libnest2d/5.0.0-CURA-9365-fix-building-cura-main.1+10@ultimaker/cura-9365")
+        self.requires("libnest2d/latest@ultimaker/cura-9365")  # FIXME: use ultimaker/stable after merge
 
     def system_requirements(self):
         pass  # Add Python here ???
@@ -107,6 +107,9 @@ class PyNest2DConan(ConanFile):
         packager = files.AutoPackager(self)
         packager.patterns.build.lib = ["*.so", "*.so.*", "*.a", "*.lib", "*.dylib", "*.pyd", "*.pyi"]
         packager.run()
+
+        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "CMakeFiles"))
+        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "pynest2d"))
 
     def package_info(self):
         self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
