@@ -20,11 +20,9 @@ on:
         paths:
         - 'src/**'
         - 'test_package/**'
-        - 'tests/**'
         - 'cmake/**'
         - 'conanfile.py'
         - 'CMakeLists.txt'
-        - 'requirements.txt'
         - '.github/workflows/conan-package.yml'
         - 'GitVersion.yml'
         branches:
@@ -35,11 +33,9 @@ on:
         paths:
         - 'src/**'
         - 'test_package/**'
-        - 'tests/**'
         - 'cmake/**'
         - 'conanfile.py'
         - 'CMakeLists.txt'
-        - 'requirements.txt'
         - '.github/workflows/conan-package.yml'
         - 'GitVersion.yml'
         branches:
