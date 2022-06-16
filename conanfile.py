@@ -36,12 +36,18 @@ class PyNest2DConan(ConanFile):
         "revision": "auto"
     }
 
+    @property
+    def _conan_data_version(self):
+        version = tools.Version(self.version)
+        return f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
+
     def build_requirements(self):
         self.tool_requires("ninja/[>=1.10.0]")
         self.tool_requires("cmake/[>=3.23.0]")
 
     def requirements(self):
-        self.requires("libnest2d/latest@ultimaker/cura-9365")  # FIXME: use ultimaker/stable after merge
+        for req in self.conan_data["requirements"][self._conan_data_version]:
+            self.requires(req)
 
     def system_requirements(self):
         pass  # Add Python here ???
