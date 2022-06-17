@@ -74,6 +74,7 @@ class PyNest2DConan(ConanFile):
 
         tc.variables["ALLOW_IN_SOURCE_BUILD"] = True
         tc.variables["Python_VERSION"] = self.options.python_version
+        tc.variables["Python_USE_STATIC_LIBS"] = not self.options.shared
         if self.options.shared and self.settings.os == "Windows":
             tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0]
         else:
