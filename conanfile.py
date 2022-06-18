@@ -24,12 +24,10 @@ class PyNest2DConan(ConanFile):
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
-        "python_version": "ANY",
         "shared": [True, False],
         "fPIC": [True, False]
     }
     default_options = {
-        "python_version": "system",
         "shared": True,
         "fPIC": True,
     }
@@ -44,15 +42,9 @@ class PyNest2DConan(ConanFile):
         for req in self._um_data(self.version)["requirements"]:
             self.requires(req)
 
-    def system_requirements(self):
-        pass  # Add Python here ???
-
     def config_options(self):
         if self.options.shared and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
-        if self.options.python_version == "system":
-            from platform import python_version
-            self.options.python_version = python_version()
 
     def configure(self):
         self.options["*"].shared = self.options.shared
@@ -65,15 +57,20 @@ class PyNest2DConan(ConanFile):
         cmake = CMakeDeps(self)
         cmake.generate()
 
-        tc = CMakeToolchain(self, generator = "Ninja")
+        tc = CMakeToolchain(self)
 
         if self.settings.compiler == "Visual Studio":
             tc.blocks["generic_system"].values["generator_platform"] = None
             tc.blocks["generic_system"].values["toolset"] = None
 
-        tc.variables["ALLOW_IN_SOURCE_BUILD"] = True
-        tc.variables["Python_VERSION"] = self.options.python_version
-        tc.variables["Python_USE_STATIC_LIBS"] = not self.options.shared
+        tc.variables["Python_EXECUTABLE"] = self.deps_user_info["cpython"].python
+        tc.variables["Python_USE_STATIC_LIBS"] = not self.options["cpython"].shared
+        tc.variables["Python_ROOT_DIR"] = self.deps_cpp_info["cpython"].rootpath
+        tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
+        tc.variables["Python_FIND_REGISTRY"] = "NEVER"
+        tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
+        tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
+
         if self.options.shared and self.settings.os == "Windows":
             tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0]
         else:
@@ -94,11 +91,9 @@ class PyNest2DConan(ConanFile):
         self.cpp.build.libdirs = [".", os.path.join("pynest2d", "pynest2d")]
 
         self.cpp.package.libdirs = ["site-packages"]
-        py_version = tools.Version(self.options.python_version)
-        py_build_type = "d" if self.settings.build_type == "Debug" else ""
-        self.cpp.package.system_libs = [f"Python{py_version.major}.{py_version.minor}{py_build_type}"]
+
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
-            self.cpp.package.system_libs.append("pthread")
+            self.cpp.package.system_libs = ["pthread"]
 
     def build(self):
         cmake = CMake(self)

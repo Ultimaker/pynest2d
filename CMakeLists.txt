@@ -10,52 +10,20 @@ include(cmake/StandardProjectSettings.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-if(NOT DEFINED Python_VERSION)
-    set(Python_VERSION
-            3.10
-            CACHE STRING "Python Version" FORCE)
-    message(STATUS "Setting Python version to ${Python_VERSION}. Set Python_VERSION if you want to compile against an other version.")
-endif()
-if(APPLE)
-    set(Python_FIND_FRAMEWORK NEVER)
-endif()
-find_package(cpython ${Python_VERSION} QUIET COMPONENTS Interpreter Development)
-if(NOT TARGET cpython::cpython)
-    find_package(Python ${Python_VERSION} EXACT REQUIRED COMPONENTS Interpreter Development)
-else()
-    add_library(Python::Python ALIAS cpython::python)
-    set(Python_SITEARCH "${CMAKE_INSTALL_PREFIX}/lib/python${Python_VERSION}/site-packages")
-    set(Python_EXECUTABLE ${cpython_PACKAGE_FOLDER_RELEASE}/bin/python3)
-    set(ENV{PYTHONPATH} ${Python_SITEARCH})
-endif()
-message(STATUS "Linking and building ${project_name} against Python ${Python_VERSION}")
-
+find_package(cpython ${Python_VERSION} REQUIRED)
 find_package(SIP REQUIRED 6.5.0)
-
-find_package(libnest2d REQUIRED)  # The library we're creating bindings for.
+find_package(libnest2d REQUIRED)
 
 add_library(pynest2d INTERFACE)
-set_project_standards(pynest2d)
 use_threads(pynest2d)
-set_rpath(TARGETS
-            pynest2d
-          PATHS
-            "$<$<PLATFORM_ID:Linux>:usr/bin>"
-            "$<$<PLATFORM_ID:Linux>:usr/bin/lib>"
-            "$<$<PLATFORM_ID:Darwin>:../lib>"
-            "$<$<PLATFORM_ID:Darwin>:../Resources/lib>"
-            "../../"  # In distributions of Cura, the libnest2d dependency is 2 directories up from where pynest2d gets installed.
-          RELATIVE)
+set_project_warnings(pynest2d)
 
 target_include_directories(pynest2d
         INTERFACE
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/>
         )
-
-find_package(Threads)
-
-target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d Python::Python Threads::Threads)
+target_link_libraries(pynest2d INTERFACE libnest2d::libnest2d cpython::cpython)
 
 add_sip_module(pynest2d)
 if(Python_SITELIB_LOCAL)
