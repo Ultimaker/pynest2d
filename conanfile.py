@@ -19,6 +19,10 @@ class PyNest2DConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     revision_mode = "scm"
     exports = "LICENSE*"
+
+    python_requires = "umbase/0.1@ultimaker/testing"
+    python_requires_extend = "umbase.UMBaseConanfile"
+
     options = {
         "python_version": "ANY",
         "shared": [True, False],
@@ -36,13 +40,8 @@ class PyNest2DConan(ConanFile):
         "revision": "auto"
     }
 
-    @property
-    def _conan_data_version(self):
-        version = tools.Version(self.version)
-        return f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
-
     def requirements(self):
-        for req in self.conan_data["requirements"][self._conan_data_version]:
+        for req in self._um_data(self.version)["requirements"]:
             self.requires(req)
 
     def system_requirements(self):
@@ -115,4 +114,7 @@ class PyNest2DConan(ConanFile):
         files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "pynest2d"))
 
     def package_info(self):
-        self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
+        if self.in_local_cache:
+            self.runenv_info.append_path("PYTHONPATH", self.components["pysavitar"].libdirs[0])
+        else:
+            self.runenv_info.append_path("PYTHONPATH", self.build_folder)
