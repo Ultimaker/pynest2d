@@ -20,7 +20,7 @@ class PyNest2DConan(ConanFile):
     revision_mode = "scm"
     exports = "LICENSE*"
 
-    python_requires = "umbase/0.1@ultimaker/testing"
+    python_requires = "umbase/0.1@ultimaker/testing", "sipbuildtool/0.1@ultimaker/testing"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -56,6 +56,10 @@ class PyNest2DConan(ConanFile):
     def generate(self):
         cmake = CMakeDeps(self)
         cmake.generate()
+
+        sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
+        sip.configure()
+        sip.generate("pyArcus")
 
         tc = CMakeToolchain(self)
 

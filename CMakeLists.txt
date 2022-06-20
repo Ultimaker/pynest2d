@@ -7,11 +7,10 @@ cmake_policy(SET CMP0091 NEW)
 project(pynest2d)
 cmake_minimum_required(VERSION 3.20)  # Lowest version it's been tested with.
 include(cmake/StandardProjectSettings.cmake)
-
+include(cmake/SIPMacros.cmake)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 find_package(cpython ${Python_VERSION} REQUIRED)
-find_package(SIP REQUIRED 6.5.0)
 find_package(libnest2d REQUIRED)
 
 add_library(pynest2d INTERFACE)
