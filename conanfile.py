@@ -59,7 +59,7 @@ class PyNest2DConan(ConanFile):
 
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
         sip.configure()
-        sip.generate("pyArcus")
+        sip.generate("pynest2d")
 
         tc = CMakeToolchain(self)
 
