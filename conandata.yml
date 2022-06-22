@@ -19,9 +19,9 @@
         - "mpdecimal/2.5.1"
         - "tcl/8.6.10"
         - "tk/8.6.10"
-"5.1.0-cura_9365":
+"5.1.0-alpha":
     requirements:
-        - "libnest2d/[5.1.0-cura_9365]@ultimaker/testing"
+        - "libnest2d/[5.1.0-alpha]@ultimaker/cura_9365"
         - "cpython/3.10.4"
         - "mpdecimal/2.5.1"
         - "tcl/8.6.10"
