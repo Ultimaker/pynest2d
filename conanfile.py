@@ -48,6 +48,11 @@ class PyNest2DConan(ConanFile):
 
     def configure(self):
         self.options["*"].shared = self.options.shared
+        if self.settings.os == "Windows":
+            # Needed to compile CPython on Windows with our configuration voor Visual Studio
+            self.options["mpdecimal"].cxx = True
+            self.options["mpdecimal"].shared = False
+            self.options["libffi"].shared = False
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
