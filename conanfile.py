@@ -47,12 +47,7 @@ class PyNest2DConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
-        self.options["*"].shared = self.options.shared
-        if self.settings.os == "Windows":
-            # Needed to compile CPython on Windows with our configuration voor Visual Studio
-            self.options["mpdecimal"].cxx = True
-            self.options["mpdecimal"].shared = False
-            self.options["libffi"].shared = False
+        self.options["libnest2d"].shared = self.options.shared
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
@@ -63,7 +58,7 @@ class PyNest2DConan(ConanFile):
         cmake.generate()
 
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
-        sip.configure()
+        sip.configure(python_interpreter = self.deps_user_info["cpython"].python)
         sip.generate("pynest2d", sip_dir = "src")
 
         tc = CMakeToolchain(self)
