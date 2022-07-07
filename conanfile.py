@@ -59,15 +59,7 @@ class PyNest2DConan(ConanFile):
         cmake.generate()
 
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
-        if self.settings.os == "Windows":
-            # FIXME: CPython needs to be compiled shared on Windows, but the sip wheel links against python3
-            # Forcing the sipbuild tool to compile sip from source with: `pip install sip==6.5.1 --no-binary :all:`
-            # doesn't work and fails: `LINK : fatal error LNK1104: cannot open file 'python3.lib'`
-            # Due to time constrain leaving it to use the system python version. Since we're not linking against
-            # the system library anyway and we only use it to generate the source code from the sip files
-            sip.configure()
-        else:
-            sip.configure(python_interpreter = self.deps_user_info["cpython"].python)
+        sip.configure()
         sip.generate("pynest2d", sip_dir = "src")
 
         tc = CMakeToolchain(self)
