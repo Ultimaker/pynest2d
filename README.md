@@ -1,11 +1,108 @@
-Introduction and Scope
-====
-This repository contains CPython bindings for [libnest2d](https://github.com/tamasmeszaros/libnest2d) (though note that we may use as of yet unmerged work done on [our own fork of libnest2d, here](https://github.com/Ultimaker/libnest2d) whenever convenient), a library to pack 2D polygons into a small space. Libnest2d implements the 2D bin packing problem.
+# pynest2d
 
-The objective of this repository is to allow libnest2d to be called from Python using Numpy. There is a [competing solution](https://github.com/markfink/nest2D) to provide Python bindings to this end. However it doesn't expose enough of the configurability for Cura's purposes. This repository aims to be a more transparent binding of libnest2d.
+<p align="center">
+    <a href="https://github.com/Ultimaker/pynest2d/actions/workflows/conan-package.yml" alt="Conan Package">
+        <img src="https://github.com/Ultimaker/pynest2d/actions/workflows/conan-package.yml/badge.svg" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d/issues" alt="Open Issues">
+        <img src="https://img.shields.io/github/issues/ultimaker/pynest2d" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d/issues?q=is%3Aissue+is%3Aclosed" alt="Closed Issues">
+        <img src="https://img.shields.io/github/issues-closed/ultimaker/pynest2d?color=g" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d/pulls" alt="Pull Requests">
+        <img src="https://img.shields.io/github/issues-pr/ultimaker/pynest2d" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/ultimaker/pynest2d" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d" alt="Repo Size">
+        <img src="https://img.shields.io/github/repo-size/ultimaker/pynest2d?style=flat" /></a>
+    <a href="https://github.com/Ultimaker/pynest2d/blob/master/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/ultimaker/pynest2d?style=flat" /></a>
+</p>
 
-Usage
-====
+This repository contains CPython bindings for [libnest2d](https://github.com/tamasmeszaros/libnest2d) (though note that we may use as of yet
+unmerged work done on [our own fork of libnest2d, here](https://github.com/Ultimaker/libnest2d) whenever convenient), a library to pack 2D
+polygons into a small space. Libnest2d implements the 2D bin packing problem.
+
+The objective of this repository is to allow libnest2d to be called from Python using Numpy. There is
+a [competing solution](https://github.com/markfink/nest2D) to provide Python bindings to this end. However it doesn't expose enough of the
+configurability for Cura's purposes. This repository aims to be a more transparent binding of libnest2d.
+
+## License
+
+![License](https://img.shields.io/github/license/ultimaker/pynest2d?style=flat)  
+pynest2d is released under terms of the LGPLv3 License. Terms of the license can be found in the LICENSE file. Or at
+http://www.gnu.org/licenses/lgpl.html
+
+> But in general it boils down to:  
+> **You need to share the source of any pynest2d modifications if you make an application with pynest2d.**
+
+## How to build
+
+> **Note:**  
+> We are currently in the process of switch our builds and pipelines to an approach which uses [Conan](https://conan.io/)
+> and pip to manage our dependencies, which are stored on our JFrog Artifactory server and in the pypi.org.
+> At the moment not everything is fully ported yet, so bare with us.
+
+If you want to develop Cura with pynest2d see the Cura
+Wiki: [Running Cura from source](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source)
+
+If you have never used [Conan](https://conan.io/) read their [documentation](https://docs.conan.io/en/latest/index.html)
+which is quite extensive and well maintained. Conan is a Python program and can be installed using pip
+
+```bash
+pip install conan --upgrade
+conan config install https://github.com/ultimaker/conan-config.git
+conan profile new default --detect
+```
+
+**Community developers would have to remove the Conan `cura` repository because that one requires credentials.**
+
+```bash
+conan remote remove cura
+```
+
+### Building pynest2d
+
+The steps above should be enough to get your system in such a state you can start development on pynest2d. Use the following steps to
+install the dependencies for pynest2d. Executed in the root directory of pynest2d.
+
+#### Release build type
+
+```shell
+conan install . --build=missing --update
+cd cmake-build-release
+cmake --toolchain=conan/conan_toolchain.cmake ..
+cmake --build .
+```
+
+#### Debug build type
+
+Use the same instructions as above, but pass the `-s build_type=Debug` flag to the `conan install` command.
+
+```shell
+conan install . --build=missing --update -s build_type=Debug
+cd cmake-build-debug
+cmake --toolchain=conan/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake --build .
+```
+
+## Creating a new pynest2d Conan package
+
+To create a new pynest2d Conan package such that it can be used in Cura, run the following command:
+
+```shell
+conan create . pynest2d/<version>@<username>/<channel> --build=missing --update
+```
+
+This package will be stored in the local Conan cache (`~/.conan/data` or `C:\Users\username\.conan\data` ) and can be used in downstream
+projects, such as Cura by adding it as a requirement in the `conanfile.py` or in `conandata.yml` if that project is set up
+in such a way. You can also specify the override at the commandline, to use the newly created package, when you execute the `conan install`
+command in the root of the consuming project, with:
+
+```shell
+conan install . -build=missing --update --require-override=pynest2d/<version>@<username>/<channel>
+```
+
+## Usage
+
 This is an example of how you can use these Python bindings to arrange multiple shapes in a volume.
 
 ```python
@@ -33,11 +130,13 @@ Contour {
 4.71238898038469
 ```
 
-For full documentation, see [libnest2d](https://github.com/tamasmeszaros/libnest2d). These bindings stay close to the original function signatures.
+For full documentation, see [libnest2d](https://github.com/tamasmeszaros/libnest2d). These bindings stay close to the original function
+signatures.
 
 Building
 ====
 This library has a couple of dependencies that need to be installed prior to building:
+
 * [libnest2d](https://github.com/Ultimaker/libnest2d), the library for which this library offers CPython bindings, and its dependencies:
   * [Clipper](http://www.angusj.com/delphi/clipper.php), a polygon clipping library.
   * [NLopt](https://nlopt.readthedocs.io/en/latest/), a library to solve non-linear optimization problems.
