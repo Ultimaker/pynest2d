@@ -1,6 +1,6 @@
 "None":
     requirements:
-        - "libnest2d/(latest)@ultimaker/stable"
+        - "libnest2d/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
 "5.1.0":
     requirements:
