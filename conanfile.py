@@ -39,7 +39,8 @@ class PyNest2DConan(ConanFile):
     }
 
     def requirements(self):
-        for req in self._um_data(self.version, self.channel)["requirements"]:
+        channel = "" if not self.channel else self.channel
+        for req in self._um_data(self.version, channel)["requirements"]:
             self.requires(req)
 
     def config_options(self):
