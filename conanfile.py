@@ -1,10 +1,9 @@
 import os
 
-from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools import files
 from conan import ConanFile
 from conans import tools
-from conans.errors import ConanException
 
 required_conan_version = ">=1.46.2"
 
@@ -84,18 +83,11 @@ class PyNest2DConan(ConanFile):
         tc.generate()
 
     def layout(self):
-        self.folders.source = "."
-        try:
-            build_type = str(self.settings.build_type)
-        except ConanException:
-            raise ConanException("'build_type' setting not defined, it is necessary for cmake_layout()")
-        self.folders.build = f"cmake-build-{build_type.lower()}"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
+        cmake_layout(self)
 
-        self.cpp.build.bindirs = ["."]
-        self.cpp.build.libdirs = [".", os.path.join("pynest2d", "pynest2d")]
+        self.cpp.package.libdirs.append("site-packages")
 
-        self.cpp.package.libdirs = ["site-packages"]
+        self.cpp.build.libdirs.extend([".", os.path.join("pynest2d", "pynest2d")])
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
