@@ -46,7 +46,7 @@ class PyNest2DConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
-        self.options["libnest2d"].shared = self.options.shared
+        self.options["nest2d"].shared = self.options.shared
         self.options["cpython"].shared = True
 
     def validate(self):
@@ -54,12 +54,12 @@ class PyNest2DConan(ConanFile):
             tools.check_min_cppstd(self, 17)
 
     def generate(self):
-        cmake = CMakeDeps(self)
-        cmake.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
         sip.configure()
-        sip.generate("pynest2d", sip_dir = "src")
+        sip.generate("pynest2d", sip_dir ="python")
 
         tc = CMakeToolchain(self)
 
@@ -84,10 +84,9 @@ class PyNest2DConan(ConanFile):
 
     def layout(self):
         cmake_layout(self)
+        self.cpp.build.libdirs = [".", os.path.join("pynest2d", "pynest2d")]
 
-        self.cpp.package.libdirs.append("site-packages")
-
-        self.cpp.build.libdirs.extend([".", os.path.join("pynest2d", "pynest2d")])
+        self.cpp.package.libdirs = ["site-packages"]
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
@@ -102,11 +101,11 @@ class PyNest2DConan(ConanFile):
         packager.patterns.build.lib = ["*.so", "*.so.*", "*.a", "*.lib", "*.dylib", "*.pyd", "*.pyi"]
         packager.run()
 
-        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "CMakeFiles"))
-        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "pynest2d"))
+        files.files.rmdir(self, os.path.join(self.package_folder, "site-packages", "pynest2d"))
 
     def package_info(self):
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.lib_paths[0])
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.build_folder)
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.build_folder, "pynest2d", "pynest2d"))

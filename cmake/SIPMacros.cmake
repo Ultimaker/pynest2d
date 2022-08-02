@@ -46,7 +46,7 @@ function(add_sip_module MODULE_TARGET)
     endif()
 
     # Make sure that the library name of the target is the same as the MODULE_TARGET with the appropriate extension
-    target_link_libraries("sip_${MODULE_TARGET}" PRIVATE "${MODULE_TARGET}")
+    target_link_libraries("sip_${MODULE_TARGET}" PUBLIC "${MODULE_TARGET}")
     set_target_properties("sip_${MODULE_TARGET}" PROPERTIES PREFIX "")
     set_target_properties("sip_${MODULE_TARGET}" PROPERTIES SUFFIX ${ext})
     set_target_properties("sip_${MODULE_TARGET}" PROPERTIES OUTPUT_NAME "${MODULE_TARGET}")
