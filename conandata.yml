@@ -1,12 +1,12 @@
 "None":
     requirements:
-        - "libnest2d/5.1.0"
+        - "nest2d/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
 "5.1.0":
     requirements:
         - "libnest2d/5.1.0"
         - "cpython/3.10.4"
-"5.1.0-beta":
+"5.2.0-alpha":
     requirements:
-        - "libnest2d/5.1.0"
+        - "nest2d/(latest)@ultimaker/testing"
         - "cpython/3.10.4"

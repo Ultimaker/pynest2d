@@ -1,10 +1,9 @@
 import os
 
-from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools import files
 from conan import ConanFile
 from conans import tools
-from conans.errors import ConanException
 
 required_conan_version = ">=1.46.2"
 
@@ -47,7 +46,7 @@ class PyNest2DConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
-        self.options["libnest2d"].shared = self.options.shared
+        self.options["nest2d"].shared = self.options.shared
         self.options["cpython"].shared = True
 
     def validate(self):
@@ -55,12 +54,12 @@ class PyNest2DConan(ConanFile):
             tools.check_min_cppstd(self, 17)
 
     def generate(self):
-        cmake = CMakeDeps(self)
-        cmake.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
         sip = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
         sip.configure()
-        sip.generate("pynest2d", sip_dir = "src")
+        sip.generate("pynest2d", sip_dir ="python")
 
         tc = CMakeToolchain(self)
 
@@ -84,15 +83,7 @@ class PyNest2DConan(ConanFile):
         tc.generate()
 
     def layout(self):
-        self.folders.source = "."
-        try:
-            build_type = str(self.settings.build_type)
-        except ConanException:
-            raise ConanException("'build_type' setting not defined, it is necessary for cmake_layout()")
-        self.folders.build = f"cmake-build-{build_type.lower()}"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
-
-        self.cpp.build.bindirs = ["."]
+        cmake_layout(self)
         self.cpp.build.libdirs = [".", os.path.join("pynest2d", "pynest2d")]
 
         self.cpp.package.libdirs = ["site-packages"]
@@ -110,11 +101,11 @@ class PyNest2DConan(ConanFile):
         packager.patterns.build.lib = ["*.so", "*.so.*", "*.a", "*.lib", "*.dylib", "*.pyd", "*.pyi"]
         packager.run()
 
-        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "CMakeFiles"))
-        files.rmdir(self, os.path.join(self.package_folder, self.cpp.package.libdirs[0], "pynest2d"))
+        files.files.rmdir(self, os.path.join(self.package_folder, "site-packages", "pynest2d"))
 
     def package_info(self):
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.lib_paths[0])
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.build_folder)
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.build_folder, "pynest2d", "pynest2d"))
