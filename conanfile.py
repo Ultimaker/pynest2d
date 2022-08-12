@@ -76,9 +76,9 @@ class PyNest2DConan(ConanFile):
         tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
 
         if self.options.shared and self.settings.os == "Windows":
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0].replace("\\", "/")
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0]
         else:
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0].replace("\\", "/")
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0]
 
         tc.generate()
 
