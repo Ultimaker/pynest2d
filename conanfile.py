@@ -67,18 +67,18 @@ class PyNest2DConan(ConanFile):
             tc.blocks["generic_system"].values["generator_platform"] = None
             tc.blocks["generic_system"].values["toolset"] = None
 
-        tc.variables["Python_EXECUTABLE"] = self.deps_user_info["cpython"].python
+        tc.variables["Python_EXECUTABLE"] = self.deps_user_info["cpython"].python.replace("\\", "/")
         tc.variables["Python_USE_STATIC_LIBS"] = not self.options["cpython"].shared
-        tc.variables["Python_ROOT_DIR"] = self.deps_cpp_info["cpython"].rootpath
+        tc.variables["Python_ROOT_DIR"] = self.deps_cpp_info["cpython"].rootpath.replace("\\", "/")
         tc.variables["Python_FIND_FRAMEWORK"] = "NEVER"
         tc.variables["Python_FIND_REGISTRY"] = "NEVER"
         tc.variables["Python_FIND_IMPLEMENTATIONS"] = "CPython"
         tc.variables["Python_FIND_STRATEGY"] = "LOCATION"
 
         if self.options.shared and self.settings.os == "Windows":
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0]
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.bindirs[0].replace("\\", "/")
         else:
-            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0]
+            tc.variables["Python_SITELIB_LOCAL"] = self.cpp.build.libdirs[0].replace("\\", "/")
 
         tc.generate()
 
