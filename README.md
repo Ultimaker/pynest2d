@@ -100,16 +100,18 @@ cd pynest2d
 ```bash
 conan install . --build=missing --update
 # optional for a specific version: conan install . pynest2d/<version>@<user>/<channel> --build=missing --update
-cmake --preset release
-cmake --build --preset release
+conan build .
+# or
+sip-install
 ```
 
 #### Debug
 
 ```bash
 conan install . --build=missing --update build_type=Debug
-cmake --preset debug
-cmake --build --preset debug
+conan build .
+# or
+sip-install
 ```
 
 ## Creating a new pynest2d Conan package
