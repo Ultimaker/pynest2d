@@ -4,6 +4,7 @@ from pathlib import Path
 
 from conan.tools import files
 from conan.tools.layout import basic_layout
+from conan.tools.gnu import AutotoolsToolchain
 from conan import ConanFile
 from conans import tools
 
@@ -21,7 +22,7 @@ class PyNest2DConan(ConanFile):
     revision_mode = "scm"
     exports = "LICENSE*"
 
-    python_requires = "umbase/0.1.5@ultimaker/testing", "pyprojecttoolchain/0.1.1@ultimaker/testing", "sipbuildtool/0.2.0@ultimaker/testing"
+    python_requires = "umbase/0.1.5@ultimaker/testing", "pyprojecttoolchain/0.1.2@ultimaker/testing", "sipbuildtool/0.2.1@ultimaker/testing"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -60,6 +61,9 @@ class PyNest2DConan(ConanFile):
             tools.check_min_cppstd(self, 17)
 
     def generate(self):
+        at = AutotoolsToolchain(self)
+        at.generate()
+
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = Path("python").as_posix()
         pp.blocks.remove("extra_sources")
