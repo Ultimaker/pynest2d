@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 from conan.tools import files
-from conan.tools.layout import basic_layout
+from conan.tools.layout import cmake_layout
 from conan.tools.gnu import AutotoolsToolchain
 from conan import ConanFile
 from conans import tools
@@ -70,7 +70,7 @@ class PyNest2DConan(ConanFile):
         pp.generate()
 
     def layout(self):
-        basic_layout(self)
+        cmake_layout(self)
 
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
