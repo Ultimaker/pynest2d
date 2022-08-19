@@ -1,7 +1,7 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //pynest2d is released under the terms of the LGPLv3 or higher.
 
-%Module(name = pynest2d, call_super_init = True)
+%Module(name = pynest2d, call_super_init = True, language = "C++")
 
 %Include BottomLeftConfig.sip
 %Include Box.sip
