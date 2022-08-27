@@ -1,52 +1,104 @@
-## How To Build
 
-> **Note:**  
-> We are currently in the process of switch our builds and pipelines to an approach which uses [Conan](https://conan.io/)
-> and pip to manage our dependencies, which are stored on our JFrog Artifactory server and in the pypi.org.
-> At the moment not everything is fully ported yet, so bare with us.
+# Building
 
-If you want to develop Cura with pynest2d see the Cura Wiki: [Running Cura from source](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source)
+<br>
 
-If you have never used [Conan](https://conan.io/) read their [documentation](https://docs.conan.io/en/latest/index.html)
-which is quite extensive and well maintained. Conan is a Python program and can be installed using pip
+> We are currently in the process of switch our builds <br>
+> and pipelines to an approach which uses **[Conan]** and <br>
+> pip to manage our dependencies, which are stored <br>
+> on our **JFrog Artifactory** server and in the pypi.org.
+>
+> *Not everything has been fully ported yet, so bare with us.*
 
-### 1. Configure Conan
 
-```bash
+<br>
+<br>
+
+## Related
+
+If you want to develop Cura with PyNest2D see the **[Cura Wiki][Cura From Source]**.
+
+**[Conan]** is a Python program and can be installed using pip. <br>
+If you have never used it read their **[Documentation][Conan Docs]** which <br>is quite extensive and well maintained.
+
+
+<br>
+<br>
+
+## Configuring Conan
+
+<br>
+
+```shell
 pip install conan --upgrade
 conan config install https://github.com/ultimaker/conan-config.git
 conan profile new default --detect --force
 ```
 
-Community developers would have to remove the Conan cura repository because it requires credentials. 
+<br>
 
-Ultimaker developers need to request an account for our JFrog Artifactory server at IT
-```bash
+Community developers would have to remove the <br>
+Conan cura repository because it requires credentials. 
+
+Ultimaker developers need to request an <br>
+account for our JFrog Artifactory server at IT.
+
+```shell
 conan remote remove cura
 ```
 
-### 2. Clone pynest2d
-```bash
+<br>
+<br>
+
+## Clone PyNest2D
+
+<br>
+
+```shell
 git clone https://github.com/Ultimaker/pynest2d.git
 cd pynest2d
 ```
 
-### 3. Install & Build pynest2d (Release OR Debug)
+<br>
+<br>
 
-#### Release
-```bash
+## Building & Installation
+
+<br>
+
+### Release
+
+```shell
 conan install . --build=missing --update
 # optional for a specific version: conan install . pynest2d/<version>@<user>/<channel> --build=missing --update
 conan build .
-# or
+```
+**or**
+
+```shell
 sip-install
 ```
 
-#### Debug
+<br>
 
-```bash
+### Debug
+
+```shell
 conan install . --build=missing --update build_type=Debug
 conan build .
-# or
+```
+
+**or**
+
+```shell
 sip-install
 ```
+
+<br>
+
+
+<!----------------------------------------------------------------------------->
+
+[Cura From Source]: https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source
+[Conan Docs]: https://docs.conan.io/en/latest/index.html
+[Conan]: https://conan.io/
