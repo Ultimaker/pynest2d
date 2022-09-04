@@ -21,7 +21,7 @@ class PyNest2DConan(ConanFile):
     revision_mode = "scm"
     exports = "LICENSE*"
 
-    python_requires = "umbase/0.1.6@ultimaker/stable", "pyprojecttoolchain/0.1.5@ultimaker/stable", "sipbuildtool/0.2.2@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.6]@ultimaker/stable", "pyprojecttoolchain/[>=0.1.5]@ultimaker/stable", "sipbuildtool/[>=0.2.2]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
