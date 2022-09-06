@@ -7,7 +7,7 @@ from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import AutoPackager
 
-required_conan_version = ">=1.48.0"
+required_conan_version = ">=1.50.0"
 
 
 class PyNest2DConan(ConanFile):
@@ -49,7 +49,7 @@ class PyNest2DConan(ConanFile):
             self.version = self._umdefault_version()
 
     def requirements(self):
-        self.requires("umbase/[>=0.1.7]@ultimaker/stable")  # required for the CMake build modules
+        self.requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")  # required for the CMake build modules
         self.requires("sipbuildtool/[>=0.2.2]@ultimaker/stable")  # required for the CMake build modules
         for req in self._um_data()["requirements"]:
             self.requires(req)
