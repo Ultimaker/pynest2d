@@ -1,3 +1,11 @@
+"5.2.0-beta":
+    requirements:
+        - "nest2d/(latest)@ultimaker/testing"
+        - "cpython/3.10.4"
+"5.2.0":
+    requirements:
+        - "nest2d/(latest)@ultimaker/testing"
+        - "cpython/3.10.4"
 "5.2.0-alpha":
     requirements:
         - "nest2d/(latest)@ultimaker/testing"
