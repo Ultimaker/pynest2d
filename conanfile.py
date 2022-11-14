@@ -5,7 +5,7 @@ from pathlib import Path
 from conan import ConanFile
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
-from conan.tools.files import copy
+from conan.tools.files import copy, mkdir
 
 required_conan_version = ">=1.50.0"
 
@@ -69,7 +69,7 @@ class PyNest2DConan(ConanFile):
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = Path("python").as_posix()
-        pp.blocks["tool_sip_project"].values["build_folder"] = self.build_path.joinpath("pynest2d").as_posix()
+        mkdir(self, self.build_path)  # FIXME: bad, this should not be necessary
         pp.blocks.remove("extra_sources")
         pp.generate()
 
