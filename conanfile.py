@@ -22,7 +22,7 @@ class PyNest2DConan(ConanFile):
     exports = "LICENSE*"
     generators = "CMakeDeps", "VirtualBuildEnv", "VirtualRunEnv"
 
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "pyprojecttoolchain/0.1.5@ultimaker/stable", "sipbuildtool/[>=0.2.3]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "pyprojecttoolchain/[>=0.1.6]@ultimaker/stable", "sipbuildtool/[>=0.2.3]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -69,6 +69,7 @@ class PyNest2DConan(ConanFile):
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = Path("python").as_posix()
+        pp.blocks["tool_sip_project"].values["build_folder"] = self.build_path.joinpath("pynest2d").as_posix()
         pp.blocks.remove("extra_sources")
         pp.generate()
 
