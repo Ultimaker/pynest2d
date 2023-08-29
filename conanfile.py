@@ -98,10 +98,6 @@ class PyNest2DConan(ConanFile):
             self.options.rm_safe("fPIC")
         self.options["cpython"].shared = True
 
-    def validate(self):
-        if self.settings.compiler.get_safe("cppstd"):
-            check_min_cppstd(self, 17)
-
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
