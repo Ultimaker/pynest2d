@@ -47,6 +47,7 @@ class PyNest2DConan(ConanFile):
         if not self.version:
             self.version = "5.3.0-alpha"
 
+    @property
     def _min_cppstd(self):
         return 17
 
