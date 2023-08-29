@@ -42,12 +42,6 @@ class PyNest2DConan(ConanFile):
         "py_build_requires": '"sip >=6, <7", "setuptools>=40.8.0", "wheel"',
         "py_build_backend": "sipbuild.api",
     }
-    scm = {
-        "type": "git",
-        "subfolder": ".",
-        "url": "auto",
-        "revision": "auto"
-    }
 
     def set_version(self):
         if not self.version:
