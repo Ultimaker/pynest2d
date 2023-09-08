@@ -66,7 +66,7 @@ class PyNest2DConan(ConanFile):
         copy(self, "*", path.join(self.recipe_folder, "python"), path.join(self.export_sources_folder, "python"))
 
     def requirements(self):
-        self.requires("nest2d/(latest)@ultimaker/cura_10951")
+        self.requires("nest2d/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
 
     def validate(self):
