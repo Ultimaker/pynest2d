@@ -45,7 +45,7 @@ class PyNest2DConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.3.0-alpha"
+            self.version = "5.4.0-alpha"
 
     @property
     def _min_cppstd(self):
@@ -66,7 +66,7 @@ class PyNest2DConan(ConanFile):
         copy(self, "*", path.join(self.recipe_folder, "python"), path.join(self.export_sources_folder, "python"))
 
     def requirements(self):
-        self.requires("nest2d/(latest)@ultimaker/testing")
+        self.requires("nest2d/5.3.0")
         self.requires("cpython/3.10.4")
 
     def validate(self):
@@ -96,7 +96,6 @@ class PyNest2DConan(ConanFile):
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
         pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        # mkdir(self, self.build_path)  # FIXME: bad, this should not be necessary
         pp.blocks.remove("extra_sources")
         pp.generate()
 
