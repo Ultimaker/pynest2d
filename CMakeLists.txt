@@ -16,8 +16,6 @@ add_sip_module(pynest2d)
 install_sip_module(pynest2d)
 
 # Ensure the linking to libnest2d will not be discarded by GCC
-target_link_libraries(sip_pynest2d PUBLIC
-    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wl,--no-as-needed>
-    -lnest2d
-    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wl,--as-needed>
-)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_link_libraries(sip_pynest2d PUBLIC -Wl,--no-as-needed -lnest2d -Wl,--as-needed)
+endif()
