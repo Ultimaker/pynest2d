@@ -72,7 +72,7 @@ class PyNest2DConan(ConanFile):
             self.requires(req)
         self.requires("cpython/3.12.2")
         self.requires("nlopt/2.7.1")
-        self.requires("clipper/6.4.2")
+        self.requires("clipper/6.4.2@ultimaker/cura_11622") # FIXME: use main after merge
 
     def validate(self):
         if self.settings.compiler.cppstd:
