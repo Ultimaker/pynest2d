@@ -71,8 +71,8 @@ class PyNest2DConan(ConanFile):
         for req in self.conan_data["requirements"]:
             self.requires(req)
         self.requires("cpython/3.12.2")
-        self.requires("clipper/6.4.2")
         self.requires("nlopt/2.7.1")
+        self.requires("clipper/6.4.2")
 
     def validate(self):
         if self.settings.compiler.cppstd:
