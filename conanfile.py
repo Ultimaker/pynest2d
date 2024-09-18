@@ -7,6 +7,7 @@ from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout, CMakeDeps
+from conan.tools.env import VirtualBuildEnv, VirtualRunEnv
 from conan.tools.files import copy, mkdir, update_conandata
 from conan.tools.microsoft import check_min_vs, is_msvc, is_msvc_static_runtime
 from conan.tools.scm import Version, Git
@@ -69,6 +70,7 @@ class PyNest2DConan(ConanFile):
     def requirements(self):
         for req in self.conan_data["requirements"]:
             self.requires(req)
+        self.requires("cpython/3.12.2")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -84,7 +86,6 @@ class PyNest2DConan(ConanFile):
     def build_requirements(self):
         self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
         self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
-        self.test_requires("cpython/3.12.2")
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -96,10 +97,13 @@ class PyNest2DConan(ConanFile):
         self.options["cpython"].shared = True
 
     def generate(self):
-        tc = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
-        tc.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
-        tc.blocks.remove("extra_sources")
-        tc.generate()
+        pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
+        pp.blocks["tool_sip_project"].values["sip_files_dir"] = str(Path("python").as_posix())
+        pp.blocks["tool_sip_bindings"].values["name"] = "pynest2d"
+        pp.blocks["tool_sip_metadata"].values["name"] = "pynest2d"
+        print(pp.blocks["tool_sip_bindings"].context())
+        pp.blocks.remove("extra_sources")
+        pp.generate()
 
         tc = CMakeDeps(self)
         tc.generate()
@@ -108,6 +112,12 @@ class PyNest2DConan(ConanFile):
         if is_msvc(self):
             tc.variables["USE_MSVC_RUNTIME_LIBRARY_DLL"] = not is_msvc_static_runtime(self)
         tc.generate()
+
+        vb = VirtualBuildEnv(self)
+        vb.generate()
+
+        vr = VirtualRunEnv(self)
+        vr.generate(scope="build")
 
         # Generate the Source code from SIP
         tc = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
@@ -120,7 +130,7 @@ class PyNest2DConan(ConanFile):
         if self.settings.os in ["Linux", "FreeBSD", "Macos"]:
             self.cpp.package.system_libs = ["pthread"]
 
-        self.cpp.package.lib = ["pySavitar"]
+        self.cpp.package.lib = ["pynest2d"]
         self.cpp.package.libdirs = ["lib"]
 
         self.layouts.build.runenv_info.prepend_path("PYTHONPATH", ".")
