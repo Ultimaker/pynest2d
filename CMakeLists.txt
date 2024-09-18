@@ -14,8 +14,3 @@ use_threads(pynest2d)
 target_link_libraries(pynest2d INTERFACE nest2d::nest2d cpython::cpython)
 add_sip_module(pynest2d)
 install_sip_module(pynest2d)
-
-# Ensure the linking to libnest2d will not be discarded by GCC
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_link_libraries(sip_pynest2d PUBLIC -Wl,--no-as-needed -lnest2d -Wl,--as-needed)
-endif()
