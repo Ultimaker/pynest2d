@@ -72,7 +72,6 @@ class PyNest2DConan(ConanFile):
             self.requires(req)
         self.requires("cpython/3.12.2")
         self.requires("nlopt/2.7.1")
-        self.requires("clipper/6.4.2@ultimaker/cura_11622") # FIXME: use main after merge
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -96,7 +95,6 @@ class PyNest2DConan(ConanFile):
     def configure(self):
         if self.options.shared:
             self.options.rm_safe("fPIC")
-        self.options["cpython"].shared = True
 
     def generate(self):
         pp = self.python_requires["pyprojecttoolchain"].module.PyProjectToolchain(self)
