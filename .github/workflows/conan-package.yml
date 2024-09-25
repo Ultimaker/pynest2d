@@ -23,5 +23,5 @@ jobs:
   conan-package:
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
     with:
-      project_name: pynest2d
+      package_name: pynest2d
     secrets: inherit
