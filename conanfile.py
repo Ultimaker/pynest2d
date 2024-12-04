@@ -26,7 +26,7 @@ class PyNest2DConan(ConanFile):
     exports = "LICENSE*"
     package_type = "library"
 
-    python_requires = "pyprojecttoolchain/[>=0.2.0]@ultimaker/cura_11622", "sipbuildtool/[>=0.3.0]@ultimaker/cura_11622"  # FIXME: use stable after merge
+    python_requires = "pyprojecttoolchain/[>=0.2.0]@ultimaker/stable", "sipbuildtool/[>=0.3.0]@ultimaker/stable"
 
     options = {
         "shared": [True, False],
@@ -74,7 +74,7 @@ class PyNest2DConan(ConanFile):
         self.requires("nlopt/2.7.1")
 
         # Although not a direct dependency, clipper is for some reason required at link-time
-        self.requires("clipper/6.4.2@ultimaker/cura_11622") # FIXME: use main after merge
+        self.requires("clipper/6.4.2@ultimaker/stable")
 
     def validate(self):
         if self.settings.compiler.cppstd:
@@ -88,8 +88,8 @@ class PyNest2DConan(ConanFile):
                 )
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
-        self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/cura_11622")  # FIXME: use stable after merge
+        self.test_requires("standardprojectsettings/[>=0.2.0]@ultimaker/stable")
+        self.test_requires("sipbuildtool/[>=0.3.0]@ultimaker/stable")
 
     def config_options(self):
         if self.settings.os == "Windows":
