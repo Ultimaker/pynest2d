@@ -70,8 +70,8 @@ class PyNest2DConan(ConanFile):
     def requirements(self):
         for req in self.conan_data["requirements"]:
             self.requires(req)
-        self.requires("cpython/3.12.2")
-        self.requires("nlopt/2.7.1")
+        self.requires("cpython/3.12.7")
+        self.requires("nlopt/2.10.0")
 
         # Although not a direct dependency, clipper is for some reason required at link-time
         self.requires("clipper/6.4.2@ultimaker/stable")
@@ -124,7 +124,9 @@ class PyNest2DConan(ConanFile):
 
         # Generate the Source code from SIP
         tc = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
-        tc.configure()
+        # Use the full path to sip-build from the CPython Scripts directory
+        sip_build_path = os.path.join(self.dependencies["cpython"].cpp_info.bindirs[0], "Scripts", "sip-build.exe")
+        tc.configure(sip_install_executable=sip_build_path)
         tc.build()
 
     def layout(self):
