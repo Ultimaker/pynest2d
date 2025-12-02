@@ -124,9 +124,8 @@ class PyNest2DConan(ConanFile):
 
         # Generate the Source code from SIP
         tc = self.python_requires["sipbuildtool"].module.SipBuildTool(self)
-        # Use the full path to sip-build from the CPython Scripts directory
-        sip_build_path = os.path.join(self.dependencies["cpython"].cpp_info.bindirs[0], "Scripts", "sip-build.exe")
-        tc.configure(sip_install_executable=sip_build_path)
+        # Auto-detect sip-build from CPython dependency (cross-platform)
+        tc.configure(cpython_dependency=self.dependencies["cpython"])
         tc.build()
 
     def layout(self):
